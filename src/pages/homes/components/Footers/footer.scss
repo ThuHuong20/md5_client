@@ -1,0 +1,65 @@
+.footer {
+    margin-top: 150px;
+
+    .footer_logo {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        height: 150px;
+        color: aliceblue;
+        gap: 50px;
+
+        .footer_logo_detail {
+            display: flex;
+            justify-content: center;
+
+            p {
+                margin-top: 10px;
+                align-items: center;
+            }
+
+
+        }
+    }
+
+    .footer_text {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-around;
+        height: 200px;
+
+        .email_footer {
+            .email_signin {
+                input {
+
+                    border-bottom: 1px solid black;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                button {
+                    background-color: black;
+                    color: aliceblue;
+                    margin-left: 10px;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
+            }
+
+            .email_follow {
+                margin-top: 10px;
+
+                .email_follow_icon {
+                    i {
+                        padding: 5px;
+                    }
+                }
+            }
+        }
+
+    }
+}

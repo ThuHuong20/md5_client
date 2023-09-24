@@ -1,0 +1,102 @@
+.detail_container {
+    width: 85%;
+    margin-left: auto;
+    margin-top: 50px;
+    display: flex;
+
+    .detail_img {
+        position: relative;
+
+        .productImg {
+            width: 429px;
+            height: 255px;
+            position: relative;
+        }
+
+        .detail_img_img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            img {
+                width: 130px;
+                height: 100px;
+                margin-top: 15px;
+            }
+        }
+    }
+
+    .detail_content {
+        margin-left: 60px;
+
+        margin-top: 50px;
+
+        h1 {
+            color: rgb(9, 15, 9);
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .quantity-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+
+            .count_product {
+                background-color: rgb(206, 0, 88);
+                border-radius: 10px;
+                letter-spacing: 5px;
+                width: 100px;
+                text-align: center;
+
+                button {
+                    width: 30px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-color: rgb(206, 0, 88);
+                    letter-spacing: 5px;
+                }
+
+                span {
+                    margin-top: 4px;
+                    color: aliceblue;
+                    letter-spacing: 5px;
+                }
+            }
+        }
+
+        .buttonAddCart {
+            margin: 30px 0;
+            width: 400px;
+
+            .addToCart {
+                width: 450px;
+                height: 50px;
+                color: rgb(236, 229, 229);
+                font-size: 16px;
+                line-height: 16px;
+                padding: 9px;
+                border-radius: 10px;
+                font-family: Georgia, serif;
+                font-weight: normal;
+                text-decoration: none;
+                font-style: normal;
+                font-variant: normal;
+                text-transform: none;
+                background-image: linear-gradient(to right,
+                        rgb(44, 35, 43) 0%,
+                        rgb(44, 39, 46) 54%,
+                        rgb(22, 10, 14) 100%);
+                box-shadow: rgba(0, 0, 0, 0.38) 5px 5px 10px 5px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.detail_des {
+    width: 50%;
+    margin-left: 380px;
+    margin-top: 30px;
+}

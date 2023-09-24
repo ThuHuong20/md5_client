@@ -1,0 +1,33 @@
+.profile {
+    margin-left: 10px;
+    margin: auto;
+    margin-top: 100px;
+    width: 800px;
+    border-radius: 10px;
+    padding: 20px;
+    -webkit-box-shadow: 5px 3px 13px 3px rgba(30, 36, 36, 0.72);
+    box-shadow: 5px 3px 13px 3px rgba(43, 49, 49, 0.72);
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+
+    .profile_title {
+        border-bottom: 3px solid rgb(19, 132, 150);
+
+        i {
+            margin-top: 10px;
+        }
+
+        display: flex;
+    }
+
+    input {
+        margin: 7px 0;
+        border: 1px solid;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+    }
+}

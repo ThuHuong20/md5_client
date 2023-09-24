@@ -1,0 +1,94 @@
+.container {
+    display: flex;
+    margin-top: 30px;
+    height: 900px;
+    max-width: 2000px;
+
+    .container_title {
+        flex: 0.7;
+        border-right: 2px solid #181ecd;
+        color: #0d0c0c;
+        padding: 10px;
+        background-color: #dddeeb;
+
+        .addmin {
+
+            h1 {
+                font-size: 24px;
+                margin-left: 15px;
+                margin-top: 25px;
+            }
+
+        }
+
+        .Manager {
+            align-items: center;
+            margin-top: 30px;
+
+            .dropdown {
+                position: relative;
+
+                button {
+                    color: #100e0e;
+                    padding: 10px 20px;
+                    border: none;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #ca1ce1;
+                    }
+                }
+
+                .dropdown-menu {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    display: none;
+                    background-color: #fff;
+                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                    z-index: 1;
+
+                    .dropdown-item {
+                        display: block;
+                        padding: 10px;
+                        text-decoration: none;
+                        color: #333;
+
+                        &:hover {
+                            background-color: #f0f0f0;
+                        }
+                    }
+                }
+
+                &:hover {
+                    .dropdown-menu {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+
+    .container_content {
+        flex: 3;
+        //background-color: rgb(240, 240, 240);
+        padding: 20px;
+
+        .container_content_search {
+            // border-bottom: 2px solid #181ecd;
+
+            input[type="text"] {
+                width: 200px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .container_content_manager {
+            margin-top: 20px;
+            position: relative;
+        }
+    }
+}

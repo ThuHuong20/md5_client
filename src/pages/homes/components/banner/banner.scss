@@ -1,0 +1,46 @@
+.carousel-inner {
+    .carousel-item {
+        position: relative;
+
+        .carousel-caption {
+            position: absolute;
+            bottom: -100px;
+            /* Điểm bắt đầu ẩn chữ dưới slide */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 1s, bottom 1s;
+
+            h1,
+            p,
+            button {
+                margin: 0;
+                padding: 0;
+            }
+
+            p {
+                font-size: 20px;
+            }
+
+            h1 {
+                font-weight: bold;
+                font-size: 40px;
+            }
+
+            button {
+                margin-top: 20px;
+                background: #ee1f29 !important;
+                width: 150px;
+                height: 50px;
+                border-radius: 30px;
+                border: 1px solid white;
+            }
+        }
+
+        &.active .carousel-caption {
+            opacity: 1;
+            bottom: 30%;
+            /* Điểm cuối cùng chữ hiển thị giữa slide */
+        }
+    }
+}

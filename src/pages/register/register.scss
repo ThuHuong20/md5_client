@@ -1,0 +1,31 @@
+.bgr {
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.38);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.38);
+    border-radius: 20px;
+}
+
+.btn_submit {
+    position: relative;
+
+    .btn_loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    &.active {
+        background-color: rgba(black, 0.2);
+        opacity: 0.5;
+
+        .btn_loading {
+            display: block;
+        }
+    }
+}
+
+
+.ant-btn-primary {
+    background: #3ad2f1 !important;
+}

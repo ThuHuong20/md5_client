@@ -1,0 +1,99 @@
+/* Quy tắc chung cho modal */
+.modal {
+    &.fade {
+        display: none;
+
+        &.show {
+            display: block;
+        }
+    }
+}
+
+/* Phần modal dialog */
+.modal-dialog {
+    &.modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Phần modal header */
+.modal-header {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .modal-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .close {
+        font-size: 24px;
+        color: #000;
+        opacity: 0.5;
+
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+    }
+}
+
+/* Phần modal body */
+.modal-body {
+    padding: 20px;
+
+    .modal-body_update {
+
+        flex-direction: row;
+
+        .modal-body_update_avatar {
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        .modal-body_update_input {
+            margin-top: 20px;
+
+            input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+
+
+                &::placeholder {
+                    color: #999;
+                }
+            }
+        }
+    }
+}
+
+/* Phần modal footer */
+.modal-footer {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+}

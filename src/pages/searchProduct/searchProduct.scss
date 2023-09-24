@@ -1,0 +1,66 @@
+.input {
+    border: none !important;
+    background-color: white !important;
+    border-radius: 10px !important;
+    color: black;
+}
+
+
+
+.product_container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.product {
+    display: flex;
+    // border: 1px solid #ccc;
+    padding: 20px;
+    width: 700px;
+    // width: calc(20% - 20px); // Sắp xếp 4 cột trên một hàng
+    // box-sizing: border-box;
+    // background-color: #fff;
+    // -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.3);
+    // box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.3);
+
+    img {
+        width: 250px;
+        height: 200px;
+        margin-bottom: 10px;
+        transition: transform 0.3s;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .product_text {
+        margin-left: 40px;
+        margin-top: 40px;
+
+        h3 {
+            font-size: 1.2rem;
+            margin: 0 0 10px;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.9rem;
+
+            b {
+                font-weight: bold;
+                font-size: 20px;
+                color: red;
+            }
+        }
+    }
+}
+
+.offcanvas {
+    min-height: 55vh;
+    // --bs-offcanvas-height: 55vh;
+}
