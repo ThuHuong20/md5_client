@@ -1,6 +1,6 @@
 .form_listProduct {
     text-align: center;
-    position: absolute;
+    //  position: absolute;
 
     h1 {
         font-size: 24px;
@@ -38,4 +38,43 @@
     /* Các kiểu CSS cho bảng */
 
 
+}
+
+
+/* Product Option */
+.productOption_container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+
+    .add_option {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .option_input {
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    }
+
+    .button {
+        background-color: black;
+        color: #f0f0f0;
+        width: 100px;
+        padding: 5px;
+        text-align: center;
+    }
 }

@@ -1,7 +1,9 @@
 
+
 import SaleCarousel from '../caro/Caro';
 import './conten.scss'
 import { useTranslation } from 'react-i18next'
+
 export default function Content() {
     const { t } = useTranslation();
 
@@ -15,21 +17,21 @@ export default function Content() {
                 </div>
                 <div className='container_category_img'>
                     <div onClick={() => {
-                        window.location.href = "http://localhost:5173/categories/64f7dedda010188c5900f9a1";
+                        window.location.href = "http://localhost:5173/categories/8c362aed-c08a-463f-8547-87e6c4c7d66e";
                     }}>
                         <img src="../images/skincare.webp" alt="" />
                         <h2>SKINCARE</h2>
                         <button>{t('BuyNow')}</button>
                     </div>
                     <div onClick={() => {
-                        window.location.href = "http://localhost:5173/categories/64f7df1da761b46dc4729036";
+                        window.location.href = "http://localhost:5173/categories/007a9eca-5c88-4d40-add2-d6dae26da9c3";
                     }}>
                         <img src="../images/makeup.webp" alt="" />
                         <h2>MEKEUP</h2>
                         <button>{t('BuyNow')}</button>
                     </div>
                     <div onClick={() => {
-                        window.location.href = "http://localhost:5173/categories/64f7df59efa0f2736370e7f0";
+                        window.location.href = "http://localhost:5173/categories/f0350b39-8c05-4dd7-842b-c41c35b14d91";
                     }}>
                         <img src="../images/perfume.webp" alt="" />
                         <h2>PERFUME</h2>

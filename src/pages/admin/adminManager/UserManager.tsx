@@ -1,8 +1,8 @@
 import api from '@/services/api';
 import { useEffect, useState } from 'react';
-import './UserManager.scss'
+
 import { Modal, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 interface Order {
     id: string,
@@ -13,7 +13,7 @@ interface Order {
     createAt: Date
 }
 export default function UserManager() {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const state = ["PENDING", "ACCEPTED", "SHIPPING", "DONE"];
     const [orders, setOrders] = useState<Order[]>([]);
     const [receipts, setReceipts] = useState([])
@@ -111,11 +111,11 @@ export default function UserManager() {
                             </td>
 
                             <td scope="col">
-                                <div style={{ cursor: "pointer" }} onClick={() => {
+                                {/* <div style={{ cursor: "pointer" }} onClick={() => {
                                     navigate(`/admin/guestDetails/${receipts.id}`)
                                 }} className="tableContent">
                                     Details
-                                </div>
+                                </div> */}
                             </td>
                         </tr>
                     ))}

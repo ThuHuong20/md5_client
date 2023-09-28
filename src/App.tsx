@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from './stores';
-import { userAction } from './stores/slices/user';
-import { Modal } from 'antd';
+import { User, userAction } from './stores/slices/user';
+import { Modal, message } from 'antd';
 import ChatBox from './pages/components/ChatBox';
+import { Socket, io } from 'socket.io-client';
 
 
 
@@ -19,27 +20,63 @@ function App() {
   /* Check Token */
 
   useEffect(() => {
-    axios.post(import.meta.env.VITE_SV_HOST + "authen/login", {
-      token: localStorage.getItem("token")
-    })
-      .then(res => {
-        if (res.status == 200) {
-          dispatch(userAction.setData(res.data.data))
-        } else {
-          localStorage.removeItem("token")
-        }
-      }).catch(err => {
-        // localStorage.removeItem("token")
-      })
-  }, [])
+    if (!userStore.data) {
+      let token = localStorage.getItem("token")
+      if (token) {
+        let socket: Socket = io("http://localhost:3001", {
+          query: {
+            token
+          }
+        })
+        socket.on("connectStatus", (data: { status: boolean, message: string }) => {
+          if (data.status) {
+            //message.success(data.message)
+          } else {
+            //  message.error(data.message)
+          }
+        })
+        socket.on("disconnect", () => {
+          dispatch(userAction.setData(null))
+          //message.error("logged out")
+        })
+        socket.on("receiveUserData", (user: User) => {
+          dispatch(userAction.setData(user))
+        })
+        dispatch(userAction.setSocket(socket))
+      }
+
+    }
+  }, [userStore.reload])
+
   useEffect(() => {
-    // console.log("userStore", userStore)
-  }, [userStore])
+    console.log();
+    console.log("userData", userStore.data);
+
+  }, [userStore.data])
+
+
+  // useEffect(() => {
+  //   axios.post(import.meta.env.VITE_SV_HOST + "authen/login", {
+  //     token: localStorage.getItem("token")
+  //   })
+  //     .then(res => {
+  //       if (res.status == 200) {
+  //         dispatch(userAction.setData(res.data.data))
+  //       } else {
+  //         localStorage.removeItem("token")
+  //       }
+  //     }).catch(err => {
+  //       // localStorage.removeItem("token")
+  //     })
+  // }, [])
+  // useEffect(() => {
+  //   // console.log("userStore", userStore)
+  // }, [userStore])
 
   const [openChat, setOpenChat] = useState(false);
   return (
     <>
-      {
+      {/* {
         openChat == false
           ? <button onClick={() => {
             Modal.confirm({
@@ -54,7 +91,7 @@ function App() {
           : <div style={{ width: "400px", position: "fixed", right: 0, bottom: 0 }}>
             <ChatBox open={openChat} />
           </div>
-      }
+      } */}
       <RouteSetup />
     </>
   )

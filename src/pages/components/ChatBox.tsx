@@ -50,12 +50,44 @@ export default function App(data: Data) {
             })
             socketClient.on('historyMessage', (data: any) => {
                 setMessageData(data)
+                console.log("messageData", messageData);
+
             })
         }
     }, [socketClient])
 
+    // function formatData(data: any) {
+    //     let result = []
+    //     for (let i in data) {
+    //         if (result.length == 0) {
+    //             result.push({
+    //                 ...data[i],
+    //                 contents: [{
+    //                     content: data[i].content,
+    //                     time: data[i].time
+    //                 }]
+    //             })
+    //         } else {
+    //             if (data[i].type == result[result.length - 1].type) {
+    //                 result[result.length - 1].content.push({
+    //                     content: data[i].content,
+    //                     time: data[i].time
+    //                 })
+    //             } else {
+    //                 result.push({
+    //                     ...data[i],
+    //                     contents: [{
+    //                         content: data[i].content,
+    //                         time: data[i].time
+    //                     }]
+    //                 })
+    //             }
+    //         }
+    //     }
+    //     return result
+    // }
     function formatData(data: any) {
-        let result = []
+        let result = [];
         for (let i in data) {
             if (result.length == 0) {
                 result.push({
@@ -64,26 +96,40 @@ export default function App(data: Data) {
                         content: data[i].content,
                         time: data[i].time
                     }]
-                })
+                });
             } else {
-                // if (data[i].type == result[result.length - 1].type) {
-                //     result[result.length - 1].content.push({
-                //         content: data[i].content,
-                //         time: data[i].time
-                //     })
-                // } else {
-                //     result.push({
-                //         ...data[i],
-                //         contents: [{
-                //             content: data[i].content,
-                //             time: data[i].time
-                //         }]
-                //     })
-                // }
+                if (data[i].type == result[result.length - 1].type) {
+                    // Kiểm tra xem `result[result.length - 1].contents` có phải là mảng hay không
+                    if (Array.isArray(result[result.length - 1].contents)) {
+                        result[result.length - 1].contents.unshift({
+                            content: data[i].content,
+                            time: data[i].time
+                        });
+                    } else {
+                        // Nếu không phải mảng, tạo một mảng mới chứa nội dung cũ và nội dung mới
+                        result[result.length - 1].contents = [{
+                            content: result[result.length - 1].content,
+                            time: result[result.length - 1].time
+                        }, {
+                            content: data[i].content,
+                            time: data[i].time
+                        }];
+                    }
+                } else {
+                    result.push({
+                        ...data[i],
+                        contents: [{
+                            content: data[i].content,
+                            time: data[i].time
+                        }]
+                    });
+                }
             }
         }
-        return result
+        return result;
     }
+
+
 
     return (
         <MDBContainer fluid className="py-5" style={{ backgroundColor: "transparent" }}>
@@ -148,7 +194,7 @@ export default function App(data: Data) {
                                                     </p>
                                                 </div>
                                                 <img
-                                                    src=""
+                                                    src="https://media.istockphoto.com/id/1276619054/vector/admin-support-service-icon.jpg?s=1024x1024&w=is&k=20&c=OPT9JSDZ0-H-Abzn9Oqfvx0jod8HMkKRM-o20OlOXPI="
                                                     alt="avatar 1"
                                                     style={{ width: "45px", height: "100%" }}
                                                 />
@@ -172,6 +218,7 @@ export default function App(data: Data) {
                                 value={inputContent}
                                 onChange={(e) => {
                                     setInputContent(e.target.value)
+
                                 }}
                             ></input>
                             <a className="ms-1 text-muted" href="#!">
@@ -182,11 +229,20 @@ export default function App(data: Data) {
                             </a>
                             <span onClick={() => {
                                 console.log("đã vào!")
-                                socketClient?.emit('onMessage', {
-                                    socketId: socketClient?.id,
-                                    userId: (userStore! as any).id,
-                                    content: inputContent
-                                })
+                                // socketClient?.emit('onMessage', {
+                                //     socketId: socketClient?.id,
+                                //     userId: (userStore! as any).id,
+                                //     content: inputContent
+                                // })
+                                if (inputContent && socketClient) {
+                                    socketClient.emit('onMessage', {
+                                        socketId: socketClient.id,
+                                        userId: (userStore! as any).id,
+                                        content: inputContent
+                                    });
+                                } else {
+                                    console.log("Input content is empty or socket client is not available.");
+                                }
                             }} className="ms-3">
                                 <MDBIcon fas icon="paper-plane" />
                             </span>

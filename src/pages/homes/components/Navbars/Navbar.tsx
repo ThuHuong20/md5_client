@@ -10,11 +10,13 @@ import api from '../../../../services/api'
 import { useEffect, useState } from 'react';
 import { User, userAction } from '../../../../stores/slices/user';
 import axios, { AxiosResponse } from 'axios';
+import { Link, useParams } from 'react-router-dom';
 //import { Link } from 'react-router-dom';
 
 
 
 export default function Navbar() {
+
     function changeLanguage(lang: string) {
         localStorage.setItem("locales", lang);
         window.location.reload();
@@ -25,13 +27,6 @@ export default function Navbar() {
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
-
-    useEffect(() => {
-        console.log("userStore", userStore);
-    }, [userStore]);
-
-    //  const [categories, setCategories] = useState([]);
-
     const [cartTotal, setCartTotal] = useState<number | null>(null);
     useEffect(() => {
         const localStorageCart = JSON.parse(localStorage.getItem("carts") || "[]");
@@ -89,7 +84,7 @@ export default function Navbar() {
                         >
                             HOME
                         </a>
-                        {/* {categories.map((category: any) => (
+                        {/* {category.map((category: any) => (
                             <Link
                                 className="item"
                                 style={{ color: "black", textDecoration: "none" }}
@@ -101,21 +96,21 @@ export default function Navbar() {
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
-                            href='http://localhost:5173/categories/64f7dedda010188c5900f9a1'
+                            href='http://localhost:5173/categories/8c362aed-c08a-463f-8547-87e6c4c7d66e'
                         >
                             SKINCARE
                         </a>
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
-                            href="http://localhost:5173/categories/64f7df1da761b46dc4729036"
+                            href="http://localhost:5173/categories/007a9eca-5c88-4d40-add2-d6dae26da9c3"
                         >
                             MAKEUP
                         </a>
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
-                            href="http://localhost:5173/categories/64f7df59efa0f2736370e7f0"
+                            href="http://localhost:5173/categories/f0350b39-8c05-4dd7-842b-c41c35b14d91"
                         >
                             PERPUME
                         </a>
@@ -146,7 +141,7 @@ export default function Navbar() {
                                         aria-haspopup="true"
                                         aria-expanded="false"
                                     >
-                                        Hi
+                                        Hi {(userStore.data! as User)?.userName}
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a className="dropdown-item" href="/profile">
@@ -155,7 +150,7 @@ export default function Navbar() {
                                         <a className="dropdown-item" href="/recipt">
                                             {t('recipt')}
                                         </a>
-                                        {(userStore! as User)?.role == "ADMIN" ? (
+                                        {(userStore.data! as User)?.role == "ADMIN" ? (
                                             <a className="dropdown-item" href="/admin/productManager">
                                                 Admin
                                             </a>
@@ -163,14 +158,14 @@ export default function Navbar() {
                                             <></>
                                         )}
                                         <p className="dropdown-item" onClick={() => {
-                                            //alert("Are you sure want to logout?");
                                             Modal.confirm({
                                                 content: t('confirmLogout'),
                                                 onOk: () => {
-                                                    window.location.href = "/";
+                                                    localStorage.removeItem("token");
+                                                    userStore.socket?.disconnect();
                                                 },
                                             });
-                                            localStorage.removeItem("token");
+
                                         }}>Log out</p>
                                     </div>
                                 </div>

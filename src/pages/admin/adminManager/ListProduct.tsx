@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react'
 import api from '@/services/api';
 import './listProduct.scss'
-import Update from './Update';
+import Update from './ProductOption';
+import { Products, productActions } from '@/stores/slices/product.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { StoreType } from '@/stores';
+import { useNavigate } from 'react-router-dom';
+import ProductOption from './ProductOption';
 
 
 export default function ListProduct() {
-
-    const [maxItemPage, setMaxItemPage] = useState(5);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [maxItemPage, setMaxItemPage] = useState(3);
     const [skipItem, setSkipItem] = useState(0);
     const [maxPage, setMaxPage] = useState<any[]>([]);
     const [products, setProducts] = useState([]);
-    const [updateDatas, setUpdateDatas] = useState([])
-
     useEffect(() => {
         api.productApi.findMany(maxItemPage, skipItem)
             .then(res => {
@@ -67,64 +71,70 @@ export default function ListProduct() {
                             <div className="tableContent">Name</div>
                         </th>
                         <th scope="col">
+                            <div className="tableContent">Type</div>
+                        </th>
+                        <th scope="col">
                             <div className="tableContent">Description</div>
                         </th>
                         <th scope="col">
-                            <div className="tableContent">Price</div>
+                            <div className="tableContent">Show Option</div>
                         </th>
                         <th scope="col">
-                            <div className="tableContent">UpDate</div>
+                            <div className="tableContent">Option</div>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((product: any, index: number) => (
+                    {products.map((product: any, index: any) => (
                         <tr key={Date.now() * Math.random()}>
                             <th scope="col">
                                 <div className="tableContent">{index + 1}</div>
                             </th>
                             <td scope="col">
                                 <div className="tableContent">
-                                    <img
-                                        style={{
-                                            width: "180px",
-                                            height: "100px",
-                                            borderRadius: "1%",
-                                            padding: "10px"
-                                        }}
-                                        src={product.avatar}
-                                        alt=""
-                                    />
+                                    <img style={{ width: "100px", height: "100px", }} src={product.avatar} alt="" />
                                 </div>
                             </td>
                             <td scope="col">
-                                <div className="tableContent"> {product.name}</div>
+                                <div className="tableContent">  {product.name}</div>
+                            </td>
+                            <td scope="col">
+                                <div className="tableContent" >
+                                    {product.type}
+                                </div>
                             </td>
                             <td scope="col">
                                 <div className="tableContent"> {product.des}</div>
                             </td>
-                            <td scope="col">
-                                <div className="tableContent" style={{ color: "red" }}>
-                                    ${product.price}
-                                </div>
+                            <td>
+                                {product.productOption.map((item: any) => (
+                                    <tr style={{ border: "none" }}>
+                                        <td style={{ border: "none" }}>{item.option}</td>
+                                        <td style={{ border: "none" }}>${item.price}</td>
+                                    </tr>
+                                ))}
+
                             </td>
                             <td scope="col">
                                 <div className="tableContent">
                                     <button
-                                        style={{ backgroundColor: " #3146d2" }}
+                                        style={{ backgroundColor: "black" }}
                                         type="button"
-                                        className="btn btn-info"
-                                        onClick={() => setUpdateDatas(product)}
-
+                                        className="btn btn-dark"
+                                        onClick={() => {
+                                            navigate(`/admin/productOption/${product.id}`)
+                                            //navigate('/productOption')
+                                        }}
                                     >
+                                        Add
 
-                                        <Update product={updateDatas} />
                                     </button>
-
                                 </div>
                             </td>
                         </tr>
                     ))}
+
+
                 </tbody>
             </table>
 

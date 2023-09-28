@@ -5,6 +5,7 @@ import { message } from 'antd'
 import { useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
 import { User } from '@/stores/slices/user';
+import axios from 'axios';
 
 export default function Profile() {
     const [oldPassword, setOldPassword] = useState("")
@@ -22,7 +23,13 @@ export default function Profile() {
         }
         await api.userApi.changePassword(data)
             .then(res => {
-                message.success("Check your confirmation email")
+                if (res.status == 200) {
+                    message.success("Check your confirmation email")
+                    localStorage.removeItem("token")
+                    window.location.href = '/';
+                } else {
+                    message.error('Incorrect password')
+                }
             })
             .catch(err => {
                 console.log("err", err);
@@ -30,20 +37,22 @@ export default function Profile() {
             })
     }
 
-    async function handleResendEmail() {
+    // async function handleResendEmail() {
+    //     try {
+    //         const res = await api.userApi.resendEmail();
+    //         message.success("Email confirmation sent successfully. Check your email.");
 
-        await api.userApi.resendEmail()
-            .then(res => {
-                console.log("res", res);
-
-                message.success("Check your confirmation email")
-            })
-            .catch(err => {
-                console.log("err", err);
-
-            })
+    //     } catch (err) {
+    //         console.error("Error:", err);
+    //     }
+    // }
+    function handleResendEmail() {
+        axios.get("http://127.0.0.1:3000/api/v1/users/resend-email", {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        })
     }
-
 
     return (
         <>

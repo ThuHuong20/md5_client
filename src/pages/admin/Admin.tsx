@@ -14,7 +14,7 @@ export default function Admin() {
                     }}>\Home</h1>
                 </div>
                 <div className='Manager'>
-                    <div className="dropdown">
+                    {/* <div className="dropdown">
                         <button
                             className="dropdown-toggle"
                             type="button"
@@ -52,6 +52,20 @@ export default function Admin() {
                             <Link className="dropdown-item" to="userManager">
                                 Guest Receipt
                             </Link>
+                        </div>
+                    </div> */}
+                    <div>
+                        <h1 style={{ fontWeight: "bold" }}><i className="fa-brands fa-product-hunt"></i> Product Manager</h1>
+                        <div style={{ marginLeft: "20px" }}>
+                            <Link className="dropdown-item" to="productManager">1. Add Product </Link>
+                            <Link className="dropdown-item" to="listProduct"> 2. List Product </Link>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 style={{ fontWeight: "bold" }}> <i className="fa-solid fa-user"></i> User Manager</h1>
+                        <div style={{ marginLeft: "20px" }}>
+                            <Link className="dropdown-item" to="productManager">1. User Receipt </Link>
+                            <Link className="dropdown-item" to="userManager">2. Guest Receipt</Link>
                         </div>
                     </div>
                 </div>

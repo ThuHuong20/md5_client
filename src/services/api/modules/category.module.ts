@@ -6,12 +6,12 @@ export default {
     },
     findByCategory: async (id: string) => {
         return await axios.get(
-            `${import.meta.env.VITE_SV_HOST}/categories/` + id,
+            `${import.meta.env.VITE_SV_HOST}categories/` + id,
         );
     },
     findProductByCategory: async (categoryId: string) => {
         return await axios.get(
-            `${import.meta.env.VITE_SV_HOST}/categories/${categoryId}`
+            `${import.meta.env.VITE_SV_HOST}categories/${categoryId}`
         );
     },
 }

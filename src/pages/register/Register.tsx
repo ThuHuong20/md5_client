@@ -33,9 +33,17 @@ const Register = () => {
       .then(res => {
         console.log("res", res)
         if (res.status == 200) {
-          message.success("Sign up successfully")
+          // message.success("Sign up successfully")
+          // window.location.href = '/login';
+          Modal.success({
+            content: res.data.message,
+            okText: 'Ok',
+            onOk: () => {
+              window.location.href = '/login';
+            },
+          });
         }
-        window.location.href = '/login';
+
         if (res.status == 213) {
           message.warning(res.data.message)
         }
@@ -72,7 +80,7 @@ const Register = () => {
                           type="text"
                           id="form3Example1c"
                           className="form-control"
-                          placeholder="UserName or Email"
+                          placeholder="UserName"
                           name="userName"
                         />
                       </div>

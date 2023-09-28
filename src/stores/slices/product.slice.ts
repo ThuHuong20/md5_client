@@ -1,23 +1,59 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface Option {
+    id: string;
+    productId: string;
+    price: number;
+    //status: boolean;
+    title: string;
+    // pictures: Picture[]
+}
+export interface Products {
+    id: string;
+    name: string;
+    des: string;
+    type: string;
+    active: Boolean;
+    categoryId: String;
+    avatar: string;
+    productOption: Option[]
 
-export interface ProductState {
-    data: any[];
 }
-const initialState: ProductState = {
-    data: []
-}
+//const initialState: null | Products = null;
+const initialState: {
+    data: null | undefined | Products[]
+} = {
+    data: null
+};
 
 const productSlice = createSlice({
     name: "product",
     initialState,
     reducers: {
-        addProduct: (state: ProductState, action) => {
-            state.data.unshift(action.payload); // Thêm action.payload vào đầu mảng data
+        insertProduct: function (state, action) {
+            state.data?.unshift(action.payload)
         },
-        addProducts: (state: ProductState, action) => {
-            state.data = [...action.payload]; // Ghi đè mảng data bằng action.payload
+        setDataApi: function (state, action) {
+            return {
+                ...state,
+                data: action.payload
+            }
         },
+        insertOptionProduct: function (state, action) {
+            return {
+                ...state,
+                data: state.data?.map((product) => {
+                    if (product.id === action.payload.productId) {
+                        return {
+                            ...product,
+                            options: [...product.productOption, action.payload]
+                        };
+                    }
+                    return product;
+                })
+            };
+        },
+
     },
 });
 

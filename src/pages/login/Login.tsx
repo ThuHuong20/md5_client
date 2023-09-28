@@ -1,19 +1,21 @@
 import './login.scss'
-import { FormEvent, memo, useState } from 'react'
+import { FormEvent, memo, useEffect, useState } from 'react'
 import api from "../../services/api";
 import Loading from '../components/Loading'
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, Modal, message } from 'antd';
 import { useTranslation } from 'react-i18next'
 import ForgotPassword from './ForgotPassword';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
+import { userAction } from '@/stores/slices/user';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
-
+  const dispatch = useDispatch()
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const [load, setLoad] = useState(false);
   const antIcon = (
     <LoadingOutlined
@@ -24,56 +26,12 @@ const Login = () => {
     />
   );
 
-  // async function login(event: FormEvent) {
-  //   event.preventDefault();
-  //   if (load) return;
 
-  //   const userName = (event.target as any).userName.value;
-  //   const password = (event.target as any).password.value;
-
-  //   // Kiểm tra xem tên người dùng và mật khẩu đã được điền và không để trống
-  //   if (!userName || !password) {
-  //     Modal.error({
-  //       content: t('err1'),
-  //       okText: t('try'),
-  //     });
-  //     return;
-  //   }
-
-  //   setLoad(true);
-
-  //   try {
-  //     const data = {
-  //       userName,
-  //       password,
-  //     };
-
-  //     const res = await api.userApi.login(data);
-
-  //     if (res.status !== 200) {
-  //       console.log("res", res);
-  //       Modal.confirm({
-  //         content: res.data.message,
-  //         okText: t('try'),
-  //       });
-  //     } else {
-  //       localStorage.setItem("token", res.data.token);
-  //       window.location.href = '/';
-  //     }
-  //   } catch (_err) {
-  //     Modal.confirm({
-  //       content: "Sập server!",
-  //       okText: "Retry",
-  //     });
-  //   }
-
-  //   setLoad(false);
-  // }
 
   const userStore = useSelector((store: StoreType) => {
     return store.userStore
   })
-  console.log("🚀 ~ file: Login.tsx:74 ~ userStore ~  userStore:", userStore)
+
 
   async function login(event: FormEvent) {
     event.preventDefault();
@@ -90,16 +48,20 @@ const Login = () => {
         if (res.status == 200) {
           message.success("Login successfully")
           localStorage.setItem("token", res.data.token);
-          window.location.href = '/';
-
+          dispatch(userAction.reload())
         }
-
         if (res.status == 213) {
           message.warning(res.data.message)
         }
 
       })
   }
+
+  useEffect(() => {
+    if (userStore.data) {
+      navigate('/')
+    }
+  }, [userStore.data])
 
 
 
@@ -140,7 +102,7 @@ const Login = () => {
                         name='userName'
                         id="form2Example17"
                         className="form-control form-control-lg"
-                        placeholder={t('emailAddress')}
+                        placeholder="UserName or Email"
                       />
                     </div>
                     <div className="form-outline mb-4">

@@ -66,6 +66,19 @@
             }
         }
 
+        .option_container {
+            margin-top: 20px;
+
+            button {
+                border-radius: 5px;
+                width: 80px;
+                height: 30px;
+                //border: 1px solid black;
+                margin: 10px 10px;
+                background-color: hsl(0, 20%, 88%);
+            }
+        }
+
         .buttonAddCart {
             margin: 30px 0;
             width: 400px;

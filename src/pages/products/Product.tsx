@@ -3,25 +3,26 @@ import './product.scss'
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from '@services/api'
-interface Product {
-  avatar: string;
-  name: string;
-  price: number;
-  id: string;
-}
+
+
 
 export default function Product() {
+
+
+
   const { categoryId } = useParams();
-  const [pageData, setPageData] = useState([]);
-  console.log("pageData:", pageData)
+  const [products, setProducts] = useState([]);
+
   const navigate = useNavigate();
+
   useEffect(() => {
     if (categoryId) {
       api.productApi
         .findProductByCategory(categoryId)
         .then((res) => {
+          console.log(" res:", res.data)
           if (res.status == 200) {
-            setPageData(res.data.data);
+            setProducts(res.data.products);
           } else {
             alert(res.data.message);
           }
@@ -32,23 +33,29 @@ export default function Product() {
     }
 
   }, [categoryId]);
+  console.log("products:", products)
   return (
     <div>
       <div className='container'>
-        <div className='container_product'>
-          <img src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwd2d0febc/3614272101456_TRESOR_A_LA_FOLIE.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-          <p style={{ fontWeight: "bold" }}>LA NUIT TRÉSOR À LA FOLIE EAU DE PARFUM</p>
-          <p>Fiery Rose & Musky Vanilla</p>
-          <div>
-            <i className="fa-regular fa-star"></i>
-            <i className="fa-regular fa-star"></i>
-            <i className="fa-regular fa-star"></i>
-            <i className="fa-regular fa-star"></i>
-            <i className="fa-regular fa-star"></i>
+        {products?.map((item: any) => (
+          <div key={Date.now() * Math.random()} className='container_product'
+            onClick={() => navigate(`/products/${item.id}`)}>
+            <img src={item.avatar} alt="" />
+            <p style={{ fontWeight: "bold" }}>{item.name}</p>
+            <p>{item.type}</p>
+            <div>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+            </div>
+            <p>{item?.productOption[0]?.price}</p>
+
+            <button>View Product</button>
           </div>
-          <p>$90.00</p>
-          <button>View Product</button>
-        </div>
+        ))}
+
 
       </div>
     </div>

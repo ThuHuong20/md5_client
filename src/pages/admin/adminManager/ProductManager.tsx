@@ -2,23 +2,21 @@ import { useEffect, useState, useRef, MutableRefObject, FormEvent } from 'react'
 import api from '@/services/api';
 import './ProductManager.scss'
 
-import { Spin, Modal } from 'antd';
+import { Spin, Modal, message } from 'antd';
 
 import { LoadingOutlined } from '@ant-design/icons';
 import Loading from '@/pages/components/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
 import { categoryActions } from '@/stores/slices/category.slice';
+import { productActions } from '@/stores/slices/product.slice';
 interface Category {
     [x: string]: any;
     id: string;
     title: string;
     avatar: string;
 }
-interface Picture {
-    file: File;
-    url: string;
-}
+
 
 export default function ProductManager() {
     const [load, setLoad] = useState(false);
@@ -30,13 +28,14 @@ export default function ProductManager() {
             spin
         />
     );
-    //const imgPreviewRef: MutableRefObject<HTMLImageElement | null> = useRef(null);
     const categoryStore = useSelector((store: StoreType) => {
         return store.categoryStore
     })
+
+
     const dispatch = useDispatch()
-    const [pictures, setPictures] = useState<Picture[]>([]);
-    // const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+
     useEffect(() => {
         api.categoryApi.findMany()
             .then(res => {
@@ -47,47 +46,47 @@ export default function ProductManager() {
                 }
             })
     }, [])
-    useEffect(() => {
-        console.log("categoryStore", categoryStore);
-    }, [categoryStore]);
-    // function addNewProduct(e: FormEvent<HTMLFormElement>) {
-    //     e.preventDefault();
-    //     let formData = new FormData();
-    //     formData.append("product", JSON.stringify({
-    //         categoryId: (e.target as any).categoryId.value,
-    //         name: (e.target as any).name.value,
-    //         des: (e.target as any).des.value,
-    //         price: (e.target as any).price.value,
-    //     }))
-    //     formData.append("imgs", avatarFile!)
-    //     for (let i in pictures) {
-    //         formData.append("imgs", pictures[i].file)
-    //     }
 
-    //     api.productApi.create(formData)
-    //         .then(res => {
-    //             console.log("res", res)
-    //             Modal.success({
-    //                 content: "Add Product sucsses"
+    const imgPreviewRef = useRef();
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    function addNewProduct(e: FormEvent<HTMLFormElement>) {
+        console.log("da vao")
+        e.preventDefault();
 
-    //             });
-    //         })
-    //         .catch(err => {
+        let formData = new FormData();
+        formData.append("avatar", avatarFile!)
+        // formData.append("avatar", newProductAvatar.avatar);
+        formData.append("products", JSON.stringify({
+            categoryId: (e.target as any).categoryId.value,
+            name: (e.target as any).name.value,
+            des: (e.target as any).des.value,
+            type: (e.target as any).type.value,
+        }))
+        api.productApi.create(formData)
+            .then(res => {
+                console.log("res", res)
+                dispatch(productActions.insertProduct(res.data));
+                Modal.success({
+                    content: "Add Product sucsses"
 
-    //         })
+                });
+            })
+            .catch(err => {
+                console.log("err", err);
+            })
 
-    // }
+    }
+
 
     return (
         <div>
             <div className="form_container">
                 <h1>Add Product</h1>
                 <form
-                    // onSubmit={(e) => {
-                    //     addNewProduct(e);
-                    // }}
+                    onSubmit={(e) => {
+                        addNewProduct(e);
+                    }}
                     className="form_add"
-
                 >
                     <div className="form_add_product">
                         <select
@@ -106,10 +105,10 @@ export default function ProductManager() {
                         </select>
                         <br />
                         <input type="text" placeholder="Name Product" name="name"></input>
-
+                        <input type="text" placeholder='type' name='type' />
                         <input type="text" placeholder="Des" name="des"></input>
 
-                        <input type="text" placeholder="Price" name="price"></input>
+                        {/* <input type="text" placeholder="Price" name="price"></input> */}
                         {/* {
                             load && <Loading />
                         } */}
@@ -120,47 +119,24 @@ export default function ProductManager() {
                             <Spin indicator={antIcon} />
                         </div> */}
                     </div>
+
                     <div className="form_add_avatar">
                         <div>
                             Avatar <br />
                             <input name='imgs' type="file" onChange={(e) => {
-                                // if (e.target.files) {
-                                //     if (e.target.files.length > 0) {
-                                //         (imgPreviewRef.current! as HTMLImageElement).src = URL.createObjectURL(e.target.files[0]);
-                                //         setAvatarFile(e.target.files[0])
-                                //     }
-                                // }
-                            }} />
-                            <img src='https://content.gobsn.com/i/bodyandfit/no-xplode_Image_01?layer0=$PDP$'
-                                // ref={imgPreviewRef}
-                                style={{ width: "100px", height: "100px", borderRadius: "50%", marginTop: "10px", marginBottom: "10px" }} />
-                        </div>
-                        <div>
-                            Pictures <br />
-                            <input name="imgs" type="file" multiple onChange={(e) => {
                                 if (e.target.files) {
                                     if (e.target.files.length > 0) {
-                                        let tempPictures: Picture[] = [];
-                                        for (let i in e.target.files) {
-                                            if (i == "length") {
-                                                break
-                                            }
-                                            tempPictures.push({
-                                                file: e.target.files[i],
-                                                url: URL.createObjectURL(e.target.files[i])
-                                            })
-                                        }
-                                        setPictures(tempPictures)
+                                        (imgPreviewRef.current! as HTMLImageElement).src = URL.createObjectURL(e.target.files[0]);
+                                        setAvatarFile(e.target.files[0])
                                     }
                                 }
                             }} />
-                            <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
-                                {/* {
-                                    pictures.map(picture => <img src={picture.url} style={{ width: "100px", height: "100px", borderRadius: "50%" }} />)
-                                } */}
-                            </div>
+                            <img
+                                src="https://content.gobsn.com/i/bodyandfit/no-xplode_Image_01?layer0=$PDP$"
+                                ref={imgPreviewRef}
+                                style={{ width: "100px", height: "100px", borderRadius: "50%", marginTop: "10px", marginBottom: "10px" }} />
                         </div>
-                        <br />
+
                     </div>
                 </form>
             </div>

@@ -3,9 +3,42 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./Caro.scss"
 import { useTranslation } from 'react-i18next';
+import { useSelector } from "react-redux";
+import { StoreType } from "@/stores";
+import { Products } from "@/stores/slices/product.slice";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "@/services/api";
+
 
 
 export default function SaleCarousel() {
+
+    const navigate = useNavigate()
+    const [maxItemPage, setMaxItemPage] = useState(7);
+    const [skipItem, setSkipItem] = useState(0);
+    const [maxPage, setMaxPage] = useState<any[]>([]);
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        api.productApi.findMany(maxItemPage, skipItem)
+            .then(res => {
+                if (res.status == 200) {
+                    console.log("res.data", res.data)
+                    let maxPageArr: any[] = [];
+                    for (let i = 0; i < res.data.maxPage; i++) {
+                        maxPageArr.push({
+                            number: Number(i) + 1,
+                            skip: res.data.data.length * Number(i)
+                        })
+                    }
+                    setMaxPage(maxPageArr);
+                    setSkipItem(res.data.data.length)
+                    setProducts(res.data.data)
+                }
+            })
+    }, [])
+    console.log("products", products);
+
     const { t } = useTranslation();
     return (
         <section className="categories">
@@ -73,92 +106,26 @@ export default function SaleCarousel() {
                         slidesToSlide={1}
                         swipeable
                     >
-
-                        <div className='sale_carou'>
-                            <div className='sale_carou_chirl' >
-                                <p className='off'>Best Seller</p>
-                                <img className="image" src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwb62da9ae/LCL_102020_Makeup_LashIdole_FullSizePDP_1000x1000.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-                                <div className="name" >
-                                    <p>DÉFINICILS HIGH-DEFINITION MASCARA</p>
+                        {products?.map((item: Products) => (
+                            <div onClick={() => navigate(`/products/${item.id}`)} className='sale_carou'>
+                                <div key={Date.now() * Math.random()} className='sale_carou_chirl' >
+                                    <p className='off'>Best Seller</p>
+                                    <img className="image" src={item.avatar} alt="" />
+                                    <div className="name" >
+                                        <p>{item.name}</p>
+                                        <p>{item.type}</p>
+                                    </div>
+                                    <div className="start">
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                    </div>
+                                    <div className="price">${item?.productOption[0]?.price}</div>
                                 </div>
-                                <div className="start">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                </div>
-                                <div className="price">$75.20</div>
                             </div>
-                        </div>
-                        <div className='sale_carou'>
-                            <div className='sale_carou_chirl' >
-                                <p className='off'>Best Seller</p>
-                                <img className="image" src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwb62da9ae/LCL_102020_Makeup_LashIdole_FullSizePDP_1000x1000.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-                                <div className="name" >
-                                    <p>DÉFINICILS HIGH-DEFINITION MASCARA</p>
-                                </div>
-                                <div className="start">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                </div>
-                                <div className="price">$75.20</div>
-                            </div>
-                        </div>
-                        <div className='sale_carou'>
-                            <div className='sale_carou_chirl' >
-                                <p className='off'>Best Seller</p>
-                                <img className="image" src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwb62da9ae/LCL_102020_Makeup_LashIdole_FullSizePDP_1000x1000.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-                                <div className="name" >
-                                    <p>DÉFINICILS HIGH-DEFINITION MASCARA</p>
-                                </div>
-                                <div className="start">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                </div>
-                                <div className="price">$75.20</div>
-                            </div>
-                        </div>
-                        <div className='sale_carou'>
-                            <div className='sale_carou_chirl' >
-                                <p className='off'>Best Seller</p>
-                                <img className="image" src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwb62da9ae/LCL_102020_Makeup_LashIdole_FullSizePDP_1000x1000.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-                                <div className="name" >
-                                    <p>DÉFINICILS HIGH-DEFINITION MASCARA</p>
-                                </div>
-                                <div className="start">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                </div>
-                                <div className="price">$75.20</div>
-                            </div>
-                        </div>
-                        <div className='sale_carou'>
-                            <div className='sale_carou_chirl' >
-                                <p className='off'>Best Seller</p>
-                                <img className="image" src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwb62da9ae/LCL_102020_Makeup_LashIdole_FullSizePDP_1000x1000.jpg?sw=270&sfrm=jpg&q=70" alt="" />
-                                <div className="name" >
-                                    <p>DÉFINICILS HIGH-DEFINITION MASCARA</p>
-                                </div>
-                                <div className="start">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                </div>
-                                <div className="price">$75.20</div>
-                            </div>
-                        </div>
+                        ))}
 
                     </Carousel>
                 </div>

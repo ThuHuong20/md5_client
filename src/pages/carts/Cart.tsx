@@ -76,7 +76,7 @@ export default function Cart() {
         <section className="h-100" style={{ backgroundColor: "#eee" }}>
             <div className="container h-100 py-5">
                 <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-10">
+                    <div className="col-10" style={{ width: "1200px" }}>
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                             <div>
@@ -88,69 +88,72 @@ export default function Cart() {
                                 </p>
                             </div>
                         </div>
-                        {cart.map(item => (
-                            <div key={item.productId} className="card rounded-3 mb-4">
 
-                                <div className="card-body p-4">
-                                    <div key={item.productId} className="row d-flex justify-content-between align-items-center">
-                                        <div className="col-md-2 col-lg-2 col-xl-2">
-                                            <img
-                                                src={item.productDetail.avatar}
-                                                className="img-fluid rounded-3"
-                                                alt="Cotton T-shirt"
-                                            />
-                                        </div>
-                                        <div className="col-md-3 col-lg-3 col-xl-3">
-                                            <p className="lead fw-normal mb-2">{item.productDetail.name}</p>
-                                        </div>
-                                        <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                            <button
-                                                className="btn btn-link px-2"
-                                                onClick={() => {
-                                                    if (item.quantity > 1) {
-                                                        updateQuantity(item.productId, item.quantity - 1);
+                        <div className="card rounded-3 mb-4">
 
-                                                    } else if (item.quantity == 1) {
-                                                        Modal.warning({
-                                                            content: "Do you want to delete this product?",
-                                                            onOk: () => {
-                                                                deleteCart(item.productId)
-                                                            },
-                                                        });
-                                                    }
-                                                }}
-                                            >
-                                                <i className="fas fa-minus" />
-                                            </button>
+                            <div className="card-body p-4">
+                                <div className="row d-flex justify-content-between align-items-center">
+                                    <div className="col-md-2 col-lg-2 col-xl-2">
+                                        <img
+                                            src="https://firebasestorage.googleapis.com/v0/b/md5lancome-53ee0.appspot.com/o/products%2F2.1.jpg?alt=media&token=03cc3226-adb9-44b7-b2f1-b94c630304d5"
+                                            className="img-fluid rounded-3"
+                                            alt="Cotton T-shirt"
+                                        />
+                                    </div>
+                                    <div className="col-md-3 col-lg-3 col-xl-3">
+                                        <p className="lead fw-normal mb-2">deifewfe</p>
+                                        <p>option</p>
+                                    </div>
+                                    <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button
+                                            className="btn btn-link px-2"
+                                        // onClick={() => {
+                                        //     if (item.quantity > 1) {
+                                        //         updateQuantity(item.productId, item.quantity - 1);
 
-                                            <p style={{ marginTop: "7px" }}>{item.quantity}</p>
+                                        //     } else if (item.quantity == 1) {
+                                        //         Modal.warning({
+                                        //             content: "Do you want to delete this product?",
+                                        //             onOk: () => {
+                                        //                 deleteCart(item.productId)
+                                        //             },
+                                        //         });
+                                        //     }
+                                        // }}
+                                        >
+                                            <i className="fas fa-minus" />
+                                        </button>
 
-                                            <button
-                                                className="btn btn-link px-2"
-                                                onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                                            >
-                                                <i className="fas fa-plus" />
-                                            </button>
-                                        </div>
-                                        <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h5 className="mb-0">${item.productDetail.price}</h5>
-                                        </div>
-                                        <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="#!" className="text-danger">
-                                                <i onClick={() => {
-                                                    Modal.warning({
-                                                        content: "Do you want to delete this product?",
-                                                        onOk: () => {
-                                                            deleteCart(item.productId)
-                                                        },
-                                                    });
-                                                }} className="fas fa-trash fa-lg" />
-                                            </a>
-                                        </div>
+                                        <p style={{ marginTop: "7px" }}>4</p>
+
+                                        <button
+                                            className="btn btn-link px-2"
+                                        // onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                                        >
+                                            <i className="fas fa-plus" />
+                                        </button>
+                                    </div>
+                                    <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 className="mb-0">$34355</h5>
+                                    </div>
+                                    <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" className="text-danger">
+                                            <i
+                                                // onClick={() => {
+                                                //     Modal.warning({
+                                                //         content: "Do you want to delete this product?",
+                                                //         onOk: () => {
+                                                //             deleteCart(item.productId)
+                                                //         },
+                                                //     });
+                                                // }} 
+                                                className="fas fa-trash fa-lg" />
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        </div>
+
                         <div style={{ marginTop: "50px" }} className="card">
                             <div className="card-body">
                                 <div className="card-body_total">
