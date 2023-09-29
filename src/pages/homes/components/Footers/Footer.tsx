@@ -88,7 +88,11 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-
+            <div className='footer_bottom'>
+                <a href="https://www.lancome-usa.com/customer-service-shipping-and-returns.html">
+                    <p style={{ marginTop: "7px" }}> Free shipping on orders $100+ and free returns on every order</p>
+                </a>
+            </div>
         </div>
 
     )
