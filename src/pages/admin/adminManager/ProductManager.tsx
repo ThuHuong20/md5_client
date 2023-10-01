@@ -2,10 +2,10 @@ import { useEffect, useState, useRef, MutableRefObject, FormEvent } from 'react'
 import api from '@/services/api';
 import './ProductManager.scss'
 
-import { Spin, Modal, message } from 'antd';
+import { Modal, message } from 'antd';
 
 import { LoadingOutlined } from '@ant-design/icons';
-import Loading from '@/pages/components/Loading';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
 import { categoryActions } from '@/stores/slices/category.slice';
@@ -47,7 +47,7 @@ export default function ProductManager() {
             })
     }, [])
 
-    const imgPreviewRef = useRef();
+    const imgPreviewRef: MutableRefObject<HTMLImageElement | null> = useRef(null);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     function addNewProduct(e: FormEvent<HTMLFormElement>) {
         console.log("da vao")

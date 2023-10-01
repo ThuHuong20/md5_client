@@ -4,6 +4,11 @@ import './productDetail.scss'
 import { useEffect, useState } from 'react';
 import api from '@/services/api';
 import { Products } from '@/stores/slices/product.slice';
+import { useSelector, useStore } from 'react-redux';
+import { StoreType } from '@/stores';
+import user from '@/services/api/modules/user';
+import { message } from 'antd';
+import { ReceiptDetail } from '@/stores/slices/user';
 
 export default function ProductDetail() {
   //const { t, i18n } = useTranslation();
@@ -15,7 +20,7 @@ export default function ProductDetail() {
 
   const [quantity, setQuantity] = useState(1);
 
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (id) {
@@ -35,6 +40,47 @@ export default function ProductDetail() {
     }
 
   }, [id]);
+
+  const userStore = useSelector((store: StoreType) => {
+    return store.userStore
+  })
+
+
+
+  const handleAddToCart = () => {
+    const cart = userStore.cart?.detail;
+    if (cart && products && products.productOption && products.productOption[optionIndex]) {
+      const selectedProductOption = products.productOption[optionIndex];
+      const foundItem = cart.find((item: ReceiptDetail) => item.optionId === selectedProductOption.id);
+
+      if (foundItem) {
+        const total = foundItem.quantity + quantity;
+        if (userStore.socket) {
+          userStore.socket.emit("addToCart", {
+            receiptId: userStore.cart?.id,
+            optionId: selectedProductOption.id,
+            quantity: total
+          });
+        }
+
+
+        message.success("Add To Cart Successfully");
+
+      } else {
+        if (userStore.socket) {
+          userStore.socket.emit("addToCart", {
+            receiptId: userStore.cart?.id,
+            optionId: selectedProductOption.id,
+            quantity: quantity,
+          });
+        }
+      }
+    }
+  }
+  useEffect(() => {
+    console.log("userStore.cart", userStore.cart);
+
+  }, [userStore.cart])
 
   return (
     <div>
@@ -121,7 +167,7 @@ export default function ProductDetail() {
               type="button"
               className="addToCart"
               onClick={() => {
-
+                handleAddToCart()
               }}
             >
               ADD TO CART

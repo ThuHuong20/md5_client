@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
+import { Products } from "./product.slice";
 
 enum UserRole {
     OWNER = "OWNER",
@@ -11,6 +12,16 @@ enum UserStatus {
     BANNED = "BANNED",
     TEMPORARY_BAN = "TEMPORARY_BAN"
 }
+
+enum ReceiptStatus {
+    SHOPPING = "SHOPPING",
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    SHIPPING = "SHIPPING",
+    DONE = "DONE"
+}
+
+
 export interface User {
     id: string;
     avatar: string;
@@ -24,16 +35,60 @@ export interface User {
     updateAt: String;
 }
 
-interface UserState {
-    data: User | null;
-    reload: boolean;
-    socket: null | Socket
+export interface Guest {
+    id: string;
+    name: string;
+    numberPhone: string;
+    email: string;
+    receipts: Receipt[]
 }
 
-const initialState: UserState = {
+export interface ReceiptDetail {
+    id: string;
+    receiptId?: string,
+    optionId: string,
+    quantity: number,
+    receipt: Receipt,
+    option: {
+        id: string,
+        name: string,
+        productId: string,
+        product: Products;
+        price: number;
+        option: string;
+    }
+}
+
+export interface Receipt {
+    id: string;
+    userId: string;
+    guestId: string;
+    user: User;
+    guest: Guest;
+    total: number;
+    status: ReceiptStatus;
+    createAt: string;
+    accepted: string;
+    shipAt: string;
+    doneAt: string;
+    detail: ReceiptDetail[]
+}
+
+export interface UserState {
+    data: User | null;
+    reload: boolean;
+    socket: null | Socket;
+    receipts: null | Receipt[];
+    cart: null | Receipt
+
+}
+
+export const initialState: UserState = {
     data: null,
     reload: false,
-    socket: null
+    socket: null,
+    receipts: null,
+    cart: null,
 }
 
 const userSlice = createSlice({
@@ -52,12 +107,26 @@ const userSlice = createSlice({
                 socket: action.payload
             }
         },
+        setReceipt: function (state, action) {
+            return {
+                ...state,
+                receipts: action.payload
+            }
+        },
+        setCart: function (state, action) {
+            return {
+                ...state,
+                cart: action.payload
+            }
+        },
         reload: function (state) {
             return {
                 ...state,
                 reload: !state.reload
             }
-        }
+        },
+
+
     }
 })
 

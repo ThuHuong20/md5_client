@@ -17,6 +17,7 @@ import { Link, useParams } from 'react-router-dom';
 
 export default function Navbar() {
 
+
     function changeLanguage(lang: string) {
         localStorage.setItem("locales", lang);
         window.location.reload();
@@ -27,14 +28,10 @@ export default function Navbar() {
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
-    const [cartTotal, setCartTotal] = useState<number | null>(null);
-    useEffect(() => {
-        const localStorageCart = JSON.parse(localStorage.getItem("carts") || "[]");
-        const total = localStorageCart.reduce((result: number, nextItem: any) => {
-            return (result += nextItem.quantity);
-        }, 0);
-        setCartTotal(total);
-    }, []);
+
+
+
+
 
     return (
         <div className='nav'>
@@ -208,7 +205,9 @@ export default function Navbar() {
                                 className="fa-solid fa-bag-shopping"
                                 style={{ cursor: "pointer" }}
                             > </i>
-                            <p style={{ color: "red" }}> {cartTotal != null ? cartTotal : 0}</p>
+                            <p style={{ color: "red" }}>{userStore.cart?.detail.reduce((value, cur) => {
+                                return value += cur.quantity
+                            }, 0)}</p>
                         </div>
                         <div className="dropdown">
                             <a

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from './stores';
-import { User, userAction } from './stores/slices/user';
+import { Receipt, User, userAction } from './stores/slices/user';
 import { Modal, message } from 'antd';
 import ChatBox from './pages/components/ChatBox';
 import { Socket, io } from 'socket.io-client';
@@ -42,17 +42,21 @@ function App() {
         socket.on("receiveUserData", (user: User) => {
           dispatch(userAction.setData(user))
         })
+        socket.on("receiveReceipt", (receipts: Receipt[]) => {
+          dispatch(userAction.setReceipt(receipts))
+        })
+        socket.on("receiveCart", (cart: Receipt) => {
+          dispatch(userAction.setCart(cart))
+        })
+
         dispatch(userAction.setSocket(socket))
       }
 
     }
   }, [userStore.reload])
 
-  useEffect(() => {
-    console.log();
-    console.log("userData", userStore.data);
 
-  }, [userStore.data])
+
 
 
   // useEffect(() => {

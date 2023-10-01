@@ -77,8 +77,11 @@ export default function ListProduct() {
                             <div className="tableContent">Description</div>
                         </th>
                         <th scope="col">
-                            <div className="tableContent">Show Option</div>
+                            <div className="tableContent"> Option</div>
                         </th>
+                        {/* <th scope="col">
+                            <div className="tableContent"> Price</div>
+                        </th> */}
                         <th scope="col">
                             <div className="tableContent">Option</div>
                         </th>
@@ -106,12 +109,12 @@ export default function ListProduct() {
                             <td scope="col">
                                 <div className="tableContent"> {product.des}</div>
                             </td>
-                            <td>
+                            <td  >
                                 {product.productOption.map((item: any) => (
-                                    <tr style={{ border: "none" }}>
+                                    <p >
                                         <td style={{ border: "none" }}>{item.option}</td>
                                         <td style={{ border: "none" }}>${item.price}</td>
-                                    </tr>
+                                    </p>
                                 ))}
 
                             </td>

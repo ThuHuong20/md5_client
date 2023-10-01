@@ -64,8 +64,8 @@ export default function Admin() {
                     <div>
                         <h1 style={{ fontWeight: "bold" }}> <i className="fa-solid fa-user"></i> User Manager</h1>
                         <div style={{ marginLeft: "20px" }}>
-                            <Link className="dropdown-item" to="productManager">1. User Receipt </Link>
-                            <Link className="dropdown-item" to="userManager">2. Guest Receipt</Link>
+                            <Link className="dropdown-item" to="userManager">1. User Receipt </Link>
+                            <Link className="dropdown-item" to="Manager">2. Guest Receipt</Link>
                         </div>
                     </div>
                 </div>

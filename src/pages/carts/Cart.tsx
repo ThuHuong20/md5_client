@@ -1,74 +1,55 @@
 import './cart.scss'
 import { useEffect, useState } from 'react'
 import api from '@services/api'
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import { useNavigate } from 'react-router-dom';
-interface Product {
-    id: string;
-    name: string;
-    avatar: string;
-    price: number;
-    des: string;
-    categoryId: string;
-    productPictures: {
-        id: string;
-        path: string;
-    }[]
-}
-interface CartItem {
-    productId: string;
-    quantity: number;
-}
-interface CartItemDetail extends CartItem {
-    productDetail: Product
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { StoreType } from '@/stores';
+import { Receipt, ReceiptDetail } from '@/stores/slices/user';
+
 
 export default function Cart() {
     const navigate = useNavigate()
-    const [cart, setCart] = useState<CartItemDetail[]>([]);
-    console.log("cart:", cart)
-    useEffect(() => {
-        async function formatCart() {
-            let cartTemp: CartItemDetail[] = [];
-            let carts: CartItem[] = JSON.parse(localStorage.getItem("carts") ?? "[]");
-            for (let i in carts) {
-                let productDetail = await api.productApi.findProductById(carts[i].productId).then(res => res.data.data)
-                cartTemp.push({
-                    ...carts[i],
-                    productDetail
+
+
+    const handleChangeQuantity = (optionId: string, quantity: number) => {
+        const cart = userStore.cart?.detail;
+        if (cart) {
+            if (userStore.socket) {
+                userStore.socket.emit("addToCart", {
+                    receiptId: userStore.cart?.id,
+                    optionId,
+                    quantity
                 })
             }
-            setCart(cartTemp);
         }
-
-        formatCart();
-    }, []);
-    const deleteCart = (productId: string) => {
-        if (localStorage.getItem("carts")) {
-            const updatedCarts = cart.filter((item) => item.productId !== productId);
-            setCart(updatedCarts);
-
-            localStorage.setItem("carts", JSON.stringify(updatedCarts));
-        }
-    };
+    }
 
     const calculateTotal = () => {
         let total = 0;
-        for (const item of cart) {
-            total += item.quantity * item.productDetail.price;
-        }
+        userStore.cart?.detail.forEach((item) => {
+            total += item.quantity * item.option.price;
+        });
         return total;
     };
 
-    const updateQuantity = (productId: string, newQuantity: number) => {
-        const updatedCart = cart.map((item) => {
-            if (item.productId === productId) {
-                return { ...item, quantity: newQuantity };
-            }
-            return item;
-        });
-        setCart(updatedCart);
-        localStorage.setItem("carts", JSON.stringify(updatedCart));
+    const userStore = useSelector((store: StoreType) => {
+        return store.userStore
+    })
+
+    useEffect(() => {
+        console.log("userStore.cart.detail", userStore.cart?.detail);
+
+    }, [userStore.cart?.detail])
+
+    const [cart, setCart] = useState<ReceiptDetail[]>([]);
+
+    const deleteCart = (id: string) => {
+        const updatedCarts = userStore.cart?.detail?.filter((item) => item.id !== id) || [];
+        setCart(updatedCarts);
+
+        console.log("updatecart", updatedCarts);
+        return updatedCarts
     };
 
     return (
@@ -83,77 +64,75 @@ export default function Cart() {
                                 <p style={{ display: "flex" }} className="mb-0">
                                     <span className="text-muted">Item:</span>
                                     <p style={{ marginLeft: "5px" }} >
-                                        {cart.length}
+                                        {userStore.cart?.detail.length}
                                     </p>
                                 </p>
                             </div>
                         </div>
 
                         <div className="card rounded-3 mb-4">
+                            {userStore.cart?.detail.map((item, index) => (
+                                <div key={item.id} className="card-body p-4">
+                                    <div className="row d-flex justify-content-between align-items-center">
+                                        <div className="col-md-2 col-lg-2 col-xl-2">
+                                            <img
+                                                src={item.option.product.avatar}
+                                                className="img-fluid rounded-3"
+                                                alt="Cotton T-shirt"
+                                            />
+                                        </div>
+                                        <div className="col-md-3 col-lg-3 col-xl-3">
+                                            <p className="lead fw-normal mb-2">{item.option.product.name}</p>
+                                            <p>{item.option.option}</p>
+                                        </div>
+                                        <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                            <button
+                                                className="btn btn-link px-2"
+                                                onClick={(e) => {
+                                                    const quantityElement = e.currentTarget.parentNode?.querySelector(".quantity-number");
+                                                    if (Number(quantityElement?.innerHTML) > 1) {
+                                                        handleChangeQuantity(item.optionId, Number(quantityElement?.innerHTML) - 1)
+                                                    }
+                                                }}
+                                            >
+                                                <i className="fas fa-minus" />
+                                            </button>
 
-                            <div className="card-body p-4">
-                                <div className="row d-flex justify-content-between align-items-center">
-                                    <div className="col-md-2 col-lg-2 col-xl-2">
-                                        <img
-                                            src="https://firebasestorage.googleapis.com/v0/b/md5lancome-53ee0.appspot.com/o/products%2F2.1.jpg?alt=media&token=03cc3226-adb9-44b7-b2f1-b94c630304d5"
-                                            className="img-fluid rounded-3"
-                                            alt="Cotton T-shirt"
-                                        />
-                                    </div>
-                                    <div className="col-md-3 col-lg-3 col-xl-3">
-                                        <p className="lead fw-normal mb-2">deifewfe</p>
-                                        <p>option</p>
-                                    </div>
-                                    <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button
-                                            className="btn btn-link px-2"
-                                        // onClick={() => {
-                                        //     if (item.quantity > 1) {
-                                        //         updateQuantity(item.productId, item.quantity - 1);
+                                            <p className='quantity-number' style={{ marginTop: "7px" }}>{item.quantity}</p>
 
-                                        //     } else if (item.quantity == 1) {
-                                        //         Modal.warning({
-                                        //             content: "Do you want to delete this product?",
-                                        //             onOk: () => {
-                                        //                 deleteCart(item.productId)
-                                        //             },
-                                        //         });
-                                        //     }
-                                        // }}
-                                        >
-                                            <i className="fas fa-minus" />
-                                        </button>
+                                            <button
+                                                className="btn btn-link px-2"
+                                                onClick={(e) => {
+                                                    const quantityElement = e.currentTarget.parentNode?.querySelector(".quantity-number");
+                                                    handleChangeQuantity(item.optionId, Number(quantityElement?.innerHTML) + 1)
 
-                                        <p style={{ marginTop: "7px" }}>4</p>
-
-                                        <button
-                                            className="btn btn-link px-2"
-                                        // onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                                        >
-                                            <i className="fas fa-plus" />
-                                        </button>
-                                    </div>
-                                    <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 className="mb-0">$34355</h5>
-                                    </div>
-                                    <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" className="text-danger">
-                                            <i
-                                                // onClick={() => {
-                                                //     Modal.warning({
-                                                //         content: "Do you want to delete this product?",
-                                                //         onOk: () => {
-                                                //             deleteCart(item.productId)
-                                                //         },
-                                                //     });
-                                                // }} 
-                                                className="fas fa-trash fa-lg" />
-                                        </a>
+                                                }}
+                                            >
+                                                <i className="fas fa-plus" />
+                                            </button>
+                                        </div>
+                                        <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                            <h5 className="mb-0">${item.quantity * item.option.price}</h5>
+                                        </div>
+                                        <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a href="#!" className="text-danger">
+                                                <i
+                                                    onClick={() => {
+                                                        Modal.warning({
+                                                            content: "Do you want to delete this product?",
+                                                            onOk: () => {
+                                                                deleteCart(item.id)
+                                                            },
+                                                        });
+                                                    }}
+                                                    className="fas fa-trash fa-lg" />
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            ))}
 
+                        </div>
                         <div style={{ marginTop: "50px" }} className="card">
                             <div className="card-body">
                                 <div className="card-body_total">
@@ -180,3 +159,5 @@ export default function Cart() {
 
     )
 }
+
+
