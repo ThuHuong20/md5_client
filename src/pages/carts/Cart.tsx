@@ -42,15 +42,15 @@ export default function Cart() {
 
     }, [userStore.cart?.detail])
 
-    const [cart, setCart] = useState<ReceiptDetail[]>([]);
 
-    const deleteCart = (id: string) => {
-        const updatedCarts = userStore.cart?.detail?.filter((item) => item.id !== id) || [];
-        setCart(updatedCarts);
-
-        console.log("updatecart", updatedCarts);
-        return updatedCarts
-    };
+    const hadleDeleteItemFromCart = (optionId: string) => {
+        if (userStore.socket) {
+            userStore.socket.emit("deleteItemFromCart", {
+                receiptId: userStore.cart?.id,
+                optionId,
+            })
+        }
+    }
 
     return (
 
@@ -121,7 +121,7 @@ export default function Cart() {
                                                         Modal.warning({
                                                             content: "Do you want to delete this product?",
                                                             onOk: () => {
-                                                                deleteCart(item.id)
+                                                                hadleDeleteItemFromCart(item.optionId)
                                                             },
                                                         });
                                                     }}

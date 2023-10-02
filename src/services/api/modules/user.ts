@@ -13,9 +13,6 @@ export default {
         return await axios.post(import.meta.env.VITE_SV_HOST + "authen/login", data)
     },
 
-    // authentication: async function () {
-    //     return await axios.get(import.meta.env.VITE_SV_HOST + "auth")
-    // },
     resetPassword: async function (email: any) {
         return await axios.post(import.meta.env.VITE_SV_HOST + "users/reset-password", email)
     },
@@ -33,6 +30,19 @@ export default {
                 "token": localStorage.getItem("token")
             }
         }
-
-    }
+    },
+    receiptFindAll: async function () {
+        return await axios.get(import.meta.env.VITE_SV_HOST + "receipt")
+    },
+    findReceiptById: async (receiptId: string) => {
+        return await axios.get(
+            `${import.meta.env.VITE_SV_HOST}receipt/${receiptId}`,
+        );
+    },
+    googleLogin: async (data: any) => {
+        return await axios.post(
+            import.meta.env.VITE_SV_HOST + "users/google-login",
+            data,
+        )
+    },
 }

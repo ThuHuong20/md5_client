@@ -1,7 +1,7 @@
 import './cart.scss'
 import { useEffect, useState } from 'react'
 import api from '@services/api'
-import { Spin, Modal, message } from 'antd';
+import { Spin, Modal, message, QRCode } from 'antd';
 import Loading from '../components/Loading';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
@@ -14,10 +14,7 @@ export default function Payment() {
         return store.userStore
     })
 
-    useEffect(() => {
-        console.log("userStore.cart?.total", userStore.cart?.total);
 
-    }, [userStore.cart?.total])
     const calculateTotal = () => {
         let total = 0;
         userStore.cart?.detail.forEach((item) => {
@@ -29,19 +26,35 @@ export default function Payment() {
     function handleCheckOut(e: React.FormEvent) {
         e.preventDefault();
         let payMode = (e.target as any).payMode.value;
-        userStore.socket?.emit("payCash", {
-            receiptId: userStore.cart?.id,
-            userId: userStore.data?.id,
-        })
-        message.success("Payment has been successful")
-        navigate('/')
+        console.log("payMode", payMode)
+        if (payMode == "CASH") {
+            userStore.socket?.emit("payCash", {
+                receiptId: userStore.cart?.id,
+                userId: userStore.data?.id
+            })
+        }
+        // message.success("Payment has been successful")
+        // navigate('/receipt')
+
+        if (payMode == "ZALO") {
+            userStore.socket?.emit("payZalo", {
+                receiptId: userStore.cart?.id,
+                userId: userStore.data?.id
+            })
+        }
     }
     // Validation states
-    const [nameValid, setNameValid] = useState(false);
-    const [phoneNumberValid, setPhoneNumberValid] = useState(false);
-    const [emailValid, setEmailValid] = useState(false);
+
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+
+    function validate() {
+        if (phoneNumber == "" || address == "") {
+            message.error("Please enter all the information!");
+            return false;
+        }
+        return true;
+    }
 
     return (
         <>
@@ -59,13 +72,18 @@ export default function Payment() {
                                     <h4>{item.option.product.name}</h4>
                                     <p className="quantity">{item.option.option}</p>
                                     <p className="quantity">Quantity: {item.quantity}</p>
-                                    <p className="price">${item.option.price}</p>
+                                    <p className="price">${item.option.price * item.quantity}</p>
                                 </div>
                             </div>
                         ))}
                         <h4 className="ship">Shipping: FREE</h4>
                         <hr />
                         <h3 className="total">TOTAL: ${calculateTotal()}</h3>
+                        <div className="qr_modal">
+                            {
+                                userStore.cartPayQr && <QRCode value={userStore.cartPayQr} icon='https://seeklogo.com/images/Z/zalopay-logo-643ADC36A4-seeklogo.com.png' />
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="container2">
@@ -113,9 +131,10 @@ export default function Payment() {
                                                 name="exp"
                                                 id="exp"
                                                 placeholder="SDT"
+                                                value={phoneNumber}
                                                 onChange={(e) => {
                                                     setPhoneNumber(e.target.value);
-                                                    setPhoneNumberValid(e.target.value.trim() !== '');
+
                                                 }}
                                             />
                                         </div>
@@ -127,6 +146,11 @@ export default function Payment() {
                                                 name="exp"
                                                 id="exp"
                                                 placeholder="address"
+                                                value={address}
+                                                onChange={(e) => {
+                                                    setAddress(e.target.value);
+
+                                                }}
                                             />
                                         </div>
                                     </div>

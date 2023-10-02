@@ -19,7 +19,7 @@ export interface Products {
     productOption: Option[]
 
 }
-//const initialState: null | Products = null;
+
 const initialState: {
     data: null | undefined | Products[]
 } = {

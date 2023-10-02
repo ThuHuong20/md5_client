@@ -10,7 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
 import { userAction } from '@/stores/slices/user';
 import { useNavigate } from 'react-router-dom';
+import { googleLogin } from '@/firebase';
+import { User } from 'firebase/auth';
 
+interface UserGoogle extends User {
+  accessToken: string
+}
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -26,12 +31,9 @@ const Login = () => {
     />
   );
 
-
-
   const userStore = useSelector((store: StoreType) => {
     return store.userStore
   })
-
 
   async function login(event: FormEvent) {
     event.preventDefault();
@@ -63,7 +65,35 @@ const Login = () => {
     }
   }, [userStore.data])
 
+  async function handleLoginWithGoogle() {
+    try {
+      await googleLogin()
+        .then(async (res) => {
+          let data = {
+            accessToken: (res.user as UserGoogle).accessToken,
+            email: res.user.email,
+            userName: res.user.email,
+            password: res.user.uid
+          }
+          await api.userApi.googleLogin(data)
+            .then(res => {
+              if (res.status == 200) {
+                localStorage.setItem("token", res.data.token);
+                dispatch(userAction.reload())
+              }
+            })
+            .catch(err => {
+              alert("Google Login Failed")
+            })
+        })
+        .catch(err => {
+          window.alert("Login Google Failed")
+        })
 
+    } catch (err) {
+      window.alert("Login Google Thất bại, thử lại!")
+    }
+  }
 
   return (
 
@@ -91,12 +121,21 @@ const Login = () => {
                         <img style={{ width: "120px" }} src="../images/logo.png" alt="" />
                       </span>
                     </div>
-                    <h5
-                      className="fw-normal mb-3 pb-3"
-                      style={{ letterSpacing: 1 }}
-                    >
-                      {t('Signintoyouraccount')}
-                    </h5>
+                    <div style={{ display: "flex" }}>
+                      <h5
+                        className="fw-normal mb-3 pb-3"
+                        style={{ letterSpacing: 1, marginTop: "7px" }}
+                      >
+                        Log in with your account or
+                      </h5>
+                      <div onClick={() => {
+                        handleLoginWithGoogle()
+                      }}>
+                        <img style={{ width: "30px", height: "30px" }} src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" alt="" />
+                      </div>
+
+                    </div>
+
                     <div className="form-outline mb-4">
                       <input
                         name='userName'

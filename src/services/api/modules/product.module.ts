@@ -17,9 +17,6 @@ export default {
             `${import.meta.env.VITE_SV_HOST}product/${id}`,
         );
     },
-    // findMany: async function (maxItemPage: number, skipItem: number) {
-    //     return await axios.get(`${import.meta.env.VITE_SV_HOST}/products?maxItemPage=${maxItemPage}&skipItem=${skipItem}`);
-    // },
 
     findMany: async function (take: number, skip: number) {
         return await axios.get(`${import.meta.env.VITE_SV_HOST}product?take=${take}&skip=${skip}`);

@@ -71,7 +71,9 @@ export default function ProductDetail() {
             optionId: selectedProductOption.id,
             quantity: quantity,
           });
+          message.success("Add To Cart Successfully");
         }
+
       }
     }
   }

@@ -88,7 +88,7 @@ export default function ReceiptDetails() {
                             <td scope="col">
                                 <div className="tableContent">{product.option.option}</div>
                             </td>
-                            <td scope="col">
+                            <td style={{ color: "red" }} scope="col">
                                 <div className="tableContent">${product.option.price * product.quantity}</div>
                             </td>
                             <td scope="col">

@@ -48,7 +48,7 @@ export default function ProductOption() {
         <label >Price: </label>
         <input type="text" name='price' value={priceValue} onChange={handleInputChange} />
       </div>
-      <div className='button'>
+      <div className='buttons'>
         <button onClick={(e: any) => {
           handleCreateOption(e)
         }}>Add</button>

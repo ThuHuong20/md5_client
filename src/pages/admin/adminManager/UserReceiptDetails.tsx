@@ -13,37 +13,32 @@ export default function UserReceiptDetails() {
 
     const { receiptId } = useParams();
 
-    const userStore = useSelector((store: StoreType) => {
-        return store.userStore
-    })
-
-    const [total, setTotal] = useState<number>(0);
+    const [receiptDetail, setReceiptDetail] = useState([])
 
     useEffect(() => {
-        const receiptDetail = findReceiptDetail();
-
-        if (receiptDetail) {
-            let calculatedTotal = 0;
-            receiptDetail.detail?.forEach((product: ReceiptDetail) => {
-                calculatedTotal += product.option.price * product.quantity;
-            });
-            setTotal(calculatedTotal);
+        if (receiptId) {
+            api.userApi.findReceiptById(receiptId)
+                .then((res) => {
+                    console.log(" res:", res.data.data.detail)
+                    if (res.status == 200) {
+                        setReceiptDetail(res.data.data.detail);
+                    } else {
+                        alert(res.data.message);
+                    }
+                })
+                .catch((err) => {
+                    alert("sap server");
+                });
         }
+    }, [receiptId])
 
-    }, [userStore.receipts, receiptId]);
-
-
-    const findReceiptDetail = () => {
-        if (userStore.receipts) {
-            const receiptDetail = userStore.receipts.find((receipt) => receipt.id == receiptId);
-            // console.log("Receipt Detail:", receiptDetail?.detail);
-            return receiptDetail;
-        }
-        return null;
+    const calculateTotal = () => {
+        let total = 0;
+        receiptDetail.forEach((item: any) => {
+            total += item.quantity * item.option.price;
+        });
+        return total;
     };
-
-    const receiptDetail = findReceiptDetail();
-
 
     return (
         <div>
@@ -72,7 +67,7 @@ export default function UserReceiptDetails() {
                     </tr>
                 </thead>
                 <tbody>
-                    {receiptDetail?.detail?.map((product: ReceiptDetail, index: number) => (
+                    {receiptDetail?.map((product: ReceiptDetail, index: number) => (
                         <tr key={index}>
                             <th scope="col">
                                 <div className="tableContent">{index + 1}</div>
@@ -100,7 +95,7 @@ export default function UserReceiptDetails() {
                 </tbody>
                 <div style={{ display: "flex", marginTop: "20px" }}>
                     <h1 style={{ fontSize: "30px", fontWeight: "bold" }}>Total: </h1>
-                    <p style={{ fontSize: "25px", fontWeight: "bold", color: "red", marginLeft: "10px" }}>${total}</p>
+                    <p style={{ fontSize: "25px", fontWeight: "bold", color: "red", marginLeft: "10px" }}>${calculateTotal()}</p>
                 </div>
 
             </table>

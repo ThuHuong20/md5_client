@@ -36,6 +36,12 @@ export default function Recipts() {
                                     <div className="tableContent">Status</div>
                                 </th>
                                 <th scope="col">
+                                    <div className="tableContent">Pay Mode</div>
+                                </th>
+                                <th scope="col">
+                                    <div className="tableContent">Pay Status</div>
+                                </th>
+                                <th scope="col">
                                     <div className="tableContent">Create At</div>
                                 </th>
                                 <th scope="col">
@@ -63,6 +69,16 @@ export default function Recipts() {
                                                 <option value="SHIPPING">Shipping</option>
                                                 <option value="DONE">Done</option>
                                             </select> </td>
+                                    </td>
+                                    <td scope="col">
+                                        <div className="tableContent">
+                                            {receipt.payMode}
+                                        </div>
+                                    </td>
+                                    <td scope="col">
+                                        <div className="tableContent">
+                                            {receipt.paid ? "Paid" : "Un paid"}
+                                        </div>
                                     </td>
                                     <td scope="col">
                                         <div className="tableContent" >

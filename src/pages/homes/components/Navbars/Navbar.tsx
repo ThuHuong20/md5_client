@@ -154,12 +154,13 @@ export default function Navbar() {
                                         ) : (
                                             <></>
                                         )}
-                                        <p className="dropdown-item" onClick={() => {
+                                        <p style={{ cursor: "pointer" }} className="dropdown-item" onClick={() => {
                                             Modal.confirm({
                                                 content: t('confirmLogout'),
                                                 onOk: () => {
                                                     localStorage.removeItem("token");
                                                     userStore.socket?.disconnect();
+                                                    window.location.href = '/'
                                                 },
                                             });
 

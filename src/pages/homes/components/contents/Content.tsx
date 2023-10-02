@@ -69,7 +69,9 @@ export default function Content() {
 
                         <div className="price">$75.20</div>
                         <div>
-                            <button>ADD TO CART</button>
+                            <button onClick={() => {
+                                window.location.href = 'http://localhost:5173/products/41'
+                            }}>ADD TO CART</button>
                         </div>
                     </div>
                 </div>
