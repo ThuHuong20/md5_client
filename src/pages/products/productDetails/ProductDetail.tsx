@@ -61,10 +61,8 @@ export default function ProductDetail() {
             optionId: selectedProductOption.id,
             quantity: total
           });
+          message.success("Add To Cart Successfully");
         }
-
-
-        message.success("Add To Cart Successfully");
 
       } else {
         if (userStore.socket) {
@@ -152,10 +150,15 @@ export default function ProductDetail() {
             {products?.productOption.map((option: any, index) => {
               return (
                 products?.productOption.length != 0 &&
-                <button onClick={() => {
-                  setOptionIndex(index)
-                  setQuantity(1)
-                }} key={option.id}>{option.option}</button>
+                <button
+                  style={{
+                    backgroundColor: optionIndex === index ? 'rgb(206, 0, 88)' : 'none', // Change 'blue' to your desired color
+                    color: optionIndex === index ? 'white' : 'black', // Change 'white' to your desired color
+                  }}
+                  onClick={() => {
+                    setOptionIndex(index)
+                    setQuantity(1)
+                  }} key={option.id}>{option.option}</button>
               )
             })}
 

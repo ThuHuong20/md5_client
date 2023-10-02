@@ -71,11 +71,15 @@
 
             button {
                 border-radius: 5px;
-                width: 80px;
+                width: 120px;
                 height: 30px;
-                //border: 1px solid black;
+                border: 1px solid black;
                 margin: 10px 10px;
-                background-color: hsl(0, 20%, 88%);
+
+                &:hover {
+                    background-color: rgb(206, 0, 88);
+                    color: white;
+                }
             }
         }
 

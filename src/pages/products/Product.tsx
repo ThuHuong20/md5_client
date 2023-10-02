@@ -50,7 +50,7 @@ export default function Product() {
               <i className="fa-solid fa-star"></i>
               <i className="fa-solid fa-star"></i>
             </div>
-            <p>{item?.productOption[0]?.price}</p>
+            <p>${item?.productOption[0]?.price}</p>
 
             <button>View Product</button>
           </div>

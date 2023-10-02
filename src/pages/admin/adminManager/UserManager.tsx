@@ -24,7 +24,7 @@ export default function UserManager() {
 
     return (
         <div>
-            <h1 style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "10px" }}>Guest Manager</h1>
+            <h1 style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "10px" }}>User Manager</h1>
             <table className="table">
                 <thead>
                     <tr>

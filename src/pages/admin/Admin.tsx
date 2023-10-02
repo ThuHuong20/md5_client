@@ -14,46 +14,6 @@ export default function Admin() {
                     }}>\Home</h1>
                 </div>
                 <div className='Manager'>
-                    {/* <div className="dropdown">
-                        <button
-                            className="dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            Product Manager
-                        </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <Link className="dropdown-item" to="productManager">
-                                Add Product
-                            </Link>
-                            <Link className="dropdown-item" to="listProduct">
-                                List Product
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="dropdown">
-                        <button
-                            className="dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            User Manager
-                        </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="#">
-                                User Receipt
-                            </a>
-                            <Link className="dropdown-item" to="userManager">
-                                Guest Receipt
-                            </Link>
-                        </div>
-                    </div> */}
                     <div>
                         <h1 style={{ fontWeight: "bold" }}><i className="fa-brands fa-product-hunt"></i> Product Manager</h1>
                         <div style={{ marginLeft: "20px" }}>

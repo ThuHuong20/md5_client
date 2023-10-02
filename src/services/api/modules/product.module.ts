@@ -30,8 +30,9 @@ export default {
         );
     },
     search: async function (searchString: string) {
-        return await axios.get(`${import.meta.env.VITE_SV_HOST}product?search=${searchString}`)
+        return await axios.get(`${import.meta.env.VITE_SV_HOST}product/search?q=${searchString}`)
     },
+
     update: async function (productId: any, formData: FormData) {
         return await axios.patch(
             `${import.meta.env.VITE_SV_HOST}product/${productId}`,

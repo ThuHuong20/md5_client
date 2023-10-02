@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import api from '@services/api';
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Products } from '@/stores/slices/product.slice';
 // Define a union type for the allowed placement values
 type OffcanvasPlacement = 'top' | 'bottom' | 'start' | 'end';
 
@@ -13,13 +14,7 @@ interface OffCanvasExampleProps {
     name: string;
     placement: OffcanvasPlacement | undefined; // Use the defined union type
 }
-interface Product {
-    id: string;
-    name: string;
-    avatar: string;
-    price: number;
-    des: string;
-}
+
 
 function OffCanvasExample({ placement }: OffCanvasExampleProps) {
 
@@ -40,19 +35,20 @@ function OffCanvasExample({ placement }: OffCanvasExampleProps) {
     /* Search */
 
     const [searchStatus, setSearchStatus] = useState(false);
-    const [searchData, setSearchData] = useState<Product[]>([]);;
+    const [searchData, setSearchData] = useState<Products[]>([]);;
 
-
+    const [loading, setLoading] = useState(false);
 
     let timeOut: any;
     function search(e: any) {
+        setLoading(true);
         clearTimeout(timeOut);
         if (e.target.value == "") {
             setSearchData([])
+            setLoading(false)
             return;
         };
         timeOut = setTimeout(async () => {
-            //  call api
             setSearchStatus(true)
             try {
                 if (searchStatus) {
@@ -64,11 +60,12 @@ function OffCanvasExample({ placement }: OffCanvasExampleProps) {
                     setTimeout(() => {
                         setSearchStatus(false);
                         setSearchData(result.data.data);
-
+                        setLoading(false);
                     }, 1500)
 
                 } else {
-                    // failed
+                    setSearchStatus(false);
+                    setLoading(false)
                 }
             } catch (err) {
                 console.log("loi call api search");
@@ -104,29 +101,36 @@ function OffCanvasExample({ placement }: OffCanvasExampleProps) {
                                     <img src={product.avatar} alt="" />
                                     <div className='product_text'>
                                         <h3>{product.name}</h3>
-                                        <p><b>${product.price}</b></p>
+                                        <p><b>${product.productOption[0].price}</b></p>
                                         <p>{product.des}</p>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <></>
-                            // <div
-                            //     style={{
-                            //         textAlign: "center",
-                            //         fontSize: "25px",
-                            //         fontWeight: "bold",
-                            //     }}
-                            // >
-                            //     Not product found!
-                            // </div>
+                            <>
+                                <div
+                                    style={{
+                                        textAlign: "center",
+                                        fontSize: "25px",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Not product found!
+                                </div>
+                            </>
+
                         )}
+
+
                         {searchStatus ? (
                             <div className="loading">
                                 <Spin indicator={antIcon} />
                             </div>
                         ) : (
-                            <></>
+                            <>
+
+
+                            </>
                         )}
                     </div>
 

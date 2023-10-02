@@ -12,7 +12,8 @@ import ProductOption from './ProductOption';
 export default function ListProduct() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [maxItemPage, setMaxItemPage] = useState(3);
+    const [selectedPage, setSelectedPage] = useState(null);
+    const [maxItemPage, setMaxItemPage] = useState(4);
     const [skipItem, setSkipItem] = useState(0);
     const [maxPage, setMaxPage] = useState<any[]>([]);
     const [products, setProducts] = useState([]);
@@ -31,6 +32,7 @@ export default function ListProduct() {
                     setMaxPage(maxPageArr);
                     setSkipItem(res.data.data.length)
                     setProducts(res.data.data)
+
                 }
             })
     }, [])
@@ -50,6 +52,7 @@ export default function ListProduct() {
                     setMaxPage(maxPageArr);
                     setSkipItem(res.data.data.length)
                     setProducts(res.data.data)
+                    setSelectedPage(pageItemObj.number);
                 }
             })
     }
@@ -112,7 +115,7 @@ export default function ListProduct() {
                             <td  >
                                 {product.productOption.map((item: any) => (
                                     <p >
-                                        <td style={{ border: "none" }}>{item.option}</td>
+                                        <td style={{ border: "none", color: "red" }}>{item.option}</td>
                                         <td style={{ border: "none" }}>${item.price}</td>
                                     </p>
                                 ))}
@@ -145,7 +148,9 @@ export default function ListProduct() {
                 {
                     maxPage.map(item => {
                         return (
-                            <span style={{ marginRight: "15px", cursor: "pointer" }} onClick={() => {
+                            <span style={{
+                                marginRight: "15px", cursor: "pointer", backgroundColor: selectedPage === item.number ? 'rgb(206, 0, 88)' : 'white', color: selectedPage === item.number ? 'white' : 'black'
+                            }} onClick={() => {
                                 changePage(item)
                             }}>{item.number}</span>
                         )

@@ -20,99 +20,64 @@ interface Data {
     open: boolean
 }
 export default function App(data: Data) {
-
-    const userStore = useSelector((store: StoreType) => {
-        return store.userStore
-    })
-    console.log("🚀 ~ file: ChatBox.tsx:27 ~ userStore ~ userStore:", userStore)
-    const [socketClient, setSocketClient] = useState<null | Socket>(null)
-    const [messageData, setMessageData] = useState<any[]>([])
+    const userStore = useSelector((store: StoreType) => store.userStore);
+    const [socketClient, setSocketClient] = useState<Socket | null>(null);
+    const [messageData, setMessageData] = useState<any[]>([]);
     const [inputContent, setInputContent] = useState("");
+
     useEffect(() => {
         if (data.open) {
-            /* Connect */
-            setSocketClient(io(`http://127.0.0.1:3000`, {
-                query: {
-                    "token": localStorage.getItem("token")
-                }
-            }))
+            setSocketClient(
+                io(`http://127.0.0.1:3000`, {
+                    query: {
+                        token: localStorage.getItem("token"),
+                    },
+                })
+            );
         } else {
-            /* Disconnect */
             socketClient?.disconnect();
-            setSocketClient(null)
+            setSocketClient(null);
         }
-    }, [data.open])
+    }, [data.open]);
 
     useEffect(() => {
         if (socketClient) {
             socketClient.on('connectStatus', (data: any) => {
                 //alert(data)
-            })
+            });
+
             socketClient.on('historyMessage', (data: any) => {
-                setMessageData(data)
+                setMessageData(data);
                 console.log("messageData", messageData);
-
-            })
+            });
         }
-    }, [socketClient])
+    }, [socketClient, messageData]);
 
-    // function formatData(data: any) {
-    //     let result = []
-    //     for (let i in data) {
-    //         if (result.length == 0) {
-    //             result.push({
-    //                 ...data[i],
-    //                 contents: [{
-    //                     content: data[i].content,
-    //                     time: data[i].time
-    //                 }]
-    //             })
-    //         } else {
-    //             if (data[i].type == result[result.length - 1].type) {
-    //                 result[result.length - 1].content.push({
-    //                     content: data[i].content,
-    //                     time: data[i].time
-    //                 })
-    //             } else {
-    //                 result.push({
-    //                     ...data[i],
-    //                     contents: [{
-    //                         content: data[i].content,
-    //                         time: data[i].time
-    //                     }]
-    //                 })
-    //             }
-    //         }
-    //     }
-    //     return result
-    // }
     function formatData(data: any) {
         let result = [];
         for (let i in data) {
-            if (result.length == 0) {
+            if (result.length === 0) {
                 result.push({
                     ...data[i],
                     contents: [{
                         content: data[i].content,
-                        time: data[i].time
-                    }]
+                        time: data[i].time,
+                    }],
                 });
             } else {
-                if (data[i].type == result[result.length - 1].type) {
-                    // Kiểm tra xem `result[result.length - 1].contents` có phải là mảng hay không
+                if (data[i].type === result[result.length - 1].type) {
                     if (Array.isArray(result[result.length - 1].contents)) {
                         result[result.length - 1].contents.unshift({
                             content: data[i].content,
-                            time: data[i].time
+                            time: data[i].time,
                         });
                     } else {
-                        // Nếu không phải mảng, tạo một mảng mới chứa nội dung cũ và nội dung mới
                         result[result.length - 1].contents = [{
                             content: result[result.length - 1].content,
-                            time: result[result.length - 1].time
+                            time: result[result.length - 1].time,
                         }, {
                             content: data[i].content,
-                            time: data[i].time
+                            time: data[i].time,
                         }];
                     }
                 } else {
@@ -120,16 +85,14 @@ export default function App(data: Data) {
                         ...data[i],
                         contents: [{
                             content: data[i].content,
-                            time: data[i].time
-                        }]
+                            time: data[i].time,
+                        }],
                     });
                 }
             }
         }
         return result;
     }
-
-
 
     return (
         <MDBContainer fluid className="py-5" style={{ backgroundColor: "transparent" }}>
@@ -138,75 +101,35 @@ export default function App(data: Data) {
                     <MDBCard id="chat2" style={{ borderRadius: "15px", border: "1px solid grey" }}>
                         <MDBCardHeader className="d-flex justify-content-between align-items-center p-3">
                             <h5 className="mb-0">Chat With Lancome Store</h5>
-                            {/* <MDBBtn color="primary" size="sm" rippleColor="dark">
-                                Chat App Comming Soon
-                            </MDBBtn> */}
                         </MDBCardHeader>
-                        {/* Nơi Render Các Đoạn Chat */}
-                        <div
-                            style={{ position: "relative", height: "400px", overflowY: "auto" }}
-                        >
+                        <div style={{ position: "relative", height: "400px", overflowY: "auto" }}>
                             <MDBCardBody>
-                                {formatData(messageData).map(message => {
-                                    if (message.type == "ADMIN") {
-                                        return (
-                                            <div key={Math.random() * Date.now()} className="d-flex flex-row justify-content-start">
-                                                <img
-                                                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                                                    alt="avatar 1"
-                                                    style={{ width: "45px", height: "100%" }}
-                                                />
-                                                <div className="content">
-                                                    {
-                                                        message.contents.map((item: any) => (
-                                                            <p
-                                                                key={Math.random() * Date.now()}
-                                                                className="small p-2 ms-3 mb-1 rounded-3"
-                                                                style={{ backgroundColor: "#f5f6f7" }}
-                                                            >
-                                                                {item.content}
-                                                            </p>
-                                                        ))
-                                                    }
-                                                    <p className="small ms-3 mb-3 rounded-3 text-muted">
-                                                        {moment(new Date(Number(message.time))).format('LT')}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div key={Math.random() * Date.now()} className="d-flex flex-row justify-content-end">
-                                                <div className="content">
-                                                    {
-                                                        message.contents.map((item: any) => (
-                                                            <p
-                                                                key={Math.random() * Date.now()}
-                                                                className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary"
-                                                                style={{ backgroundColor: "#f5f6f7" }}
-                                                            >
-                                                                {item.content}
-                                                            </p>
-                                                        ))
-                                                    }
-                                                    <p className="small ms-3 mb-3 rounded-3 text-muted">
-                                                        {moment(new Date(Number(message.time))).format('LT')}
-                                                    </p>
-                                                </div>
-                                                <img
-                                                    src="https://media.istockphoto.com/id/1276619054/vector/admin-support-service-icon.jpg?s=1024x1024&w=is&k=20&c=OPT9JSDZ0-H-Abzn9Oqfvx0jod8HMkKRM-o20OlOXPI="
-                                                    alt="avatar 1"
-                                                    style={{ width: "45px", height: "100%" }}
-                                                />
-                                            </div>
-                                        )
-                                    }
-                                })}
+                                {formatData(messageData).map(message => (
+                                    <div key={Math.random() * Date.now()} className={message.type === "ADMIN" ? "d-flex flex-row justify-content-start" : "d-flex flex-row justify-content-end"}>
+                                        <div className="content">
+                                            {message.contents.map((item: any) => (
+                                                <p key={Math.random() * Date.now()} className={message.type === "ADMIN" ? "small p-2 ms-3 mb-1 rounded-3" : "small p-2 me-3 mb-1 text-white rounded-3 bg-primary"} style={{ backgroundColor: "#f5f6f7" }}>
+                                                    {item.content}
+                                                </p>
+                                            ))}
+                                            <p className="small ms-3 mb-3 rounded-3 text-muted">
+                                                {moment(new Date(Number(message.time))).format('LT')}
+                                            </p>
+                                        </div>
+                                        {message.type !== "ADMIN" && (
+                                            <img
+                                                src="https://media.istockphoto.com/id/1276619054/vector/admin-support-service-icon.jpg?s=1024x1024&w=is&k=20&c=OPT9JSDZ0-H-Abzn9Oqfvx0jod8HMkKRM-o20OlOXPI="
+                                                alt="avatar 1"
+                                                style={{ width: "45px", height: "100%" }}
+                                            />
+                                        )}
+                                    </div>
+                                ))}
                             </MDBCardBody>
                         </div>
                         <MDBCardFooter className="text-muted d-flex justify-content-start align-items-center p-3">
                             <img
-                                src={`${userStore && (userStore! as any).avatar}`}
+                                src={userStore && (userStore as any).avatar}
                                 alt="avatar 3"
                                 style={{ width: "45px", height: "100%" }}
                             />
@@ -216,10 +139,7 @@ export default function App(data: Data) {
                                 id="exampleFormControlInput1"
                                 placeholder="Type message"
                                 value={inputContent}
-                                onChange={(e) => {
-                                    setInputContent(e.target.value)
-
-                                }}
+                                onChange={(e) => setInputContent(e.target.value)}
                             ></input>
                             <a className="ms-1 text-muted" href="#!">
                                 <MDBIcon fas icon="paperclip" />
@@ -228,17 +148,11 @@ export default function App(data: Data) {
                                 <MDBIcon fas icon="smile" />
                             </a>
                             <span onClick={() => {
-                                console.log("đã vào!")
-                                // socketClient?.emit('onMessage', {
-                                //     socketId: socketClient?.id,
-                                //     userId: (userStore! as any).id,
-                                //     content: inputContent
-                                // })
                                 if (inputContent && socketClient) {
                                     socketClient.emit('onMessage', {
                                         socketId: socketClient.id,
-                                        userId: (userStore! as any).id,
-                                        content: inputContent
+                                        userId: (userStore as any).id,
+                                        content: inputContent,
                                     });
                                 } else {
                                     console.log("Input content is empty or socket client is not available.");

@@ -36,6 +36,12 @@ export default function Payment() {
         message.success("Payment has been successful")
         navigate('/')
     }
+    // Validation states
+    const [nameValid, setNameValid] = useState(false);
+    const [phoneNumberValid, setPhoneNumberValid] = useState(false);
+    const [emailValid, setEmailValid] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
 
     return (
         <>
@@ -107,6 +113,10 @@ export default function Payment() {
                                                 name="exp"
                                                 id="exp"
                                                 placeholder="SDT"
+                                                onChange={(e) => {
+                                                    setPhoneNumber(e.target.value);
+                                                    setPhoneNumberValid(e.target.value.trim() !== '');
+                                                }}
                                             />
                                         </div>
                                     </div>

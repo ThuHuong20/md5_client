@@ -80,7 +80,7 @@ function App() {
   const [openChat, setOpenChat] = useState(false);
   return (
     <>
-      {/* {
+      {
         openChat == false
           ? <button onClick={() => {
             Modal.confirm({
@@ -95,7 +95,7 @@ function App() {
           : <div style={{ width: "400px", position: "fixed", right: 0, bottom: 0 }}>
             <ChatBox open={openChat} />
           </div>
-      } */}
+      }
       <RouteSetup />
     </>
   )

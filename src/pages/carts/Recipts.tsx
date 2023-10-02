@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react'
 import api from '@/services/api';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { StoreType } from '@/stores';
 export default function Recipts() {
-    const [receipts, setReceipts] = useState([])
-    console.log(" receipts:", receipts)
+    const navigate = useNavigate()
+
+    const userStore = useSelector((store: StoreType) => {
+        return store.userStore
+    })
+
     useEffect(() => {
-        api.purchaseApi
-            .findUserReceipt()
-            .then((res) => {
-                if (res.status == 200) {
-                    console.log("res.data 123", res.data)
-                    setReceipts(res.data.data);
-                } else {
-                    alert(res.data.message);
-                }
-            })
-            .catch((err) => {
-                alert("sap server");
-            });
-    }, []);
+        console.log("userStore", userStore);
+
+    }, [userStore])
     return (
         <>
             <div className="informationLine_receipts">
@@ -30,75 +26,59 @@ export default function Recipts() {
                         <thead>
                             <tr>
                                 <th scope="col">
-                                    <div className="tableContent">#</div>
+                                    <div className="tableContent">STT</div>
                                 </th>
                                 <th scope="col">
-                                    <div className="tableContent">Receipt Id</div>
-                                </th>
-                                <th scope="col">
-                                    <div className="tableContent">Quantity</div>
-                                </th>
-                                <th scope="col">
-                                    <div className="tableContent">Total</div>
-                                </th>
-                                <th scope="col">
-                                    <div className="tableContent">Paid Status</div>
-                                </th>
-                                <th scope="col">
-                                    <div className="tableContent">Paid Mode</div>
-                                </th>
-                                <th scope="col">
-                                    <div className="tableContent">Create Time</div>
+                                    <div className="tableContent">CustomerId</div>
                                 </th>
 
                                 <th scope="col">
-                                    <div className="tableContent">Detail</div>
+                                    <div className="tableContent">Status</div>
+                                </th>
+                                <th scope="col">
+                                    <div className="tableContent">Create At</div>
+                                </th>
+                                <th scope="col">
+                                    <div className="tableContent">Details</div>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {receipts.map((receipt: any, index: number) => (
+                            {userStore.receipts?.map((receipt: any, index: number) => (
                                 <tr key={Date.now() * Math.random()}>
                                     <th scope="col">
                                         <div className="tableContent">{index + 1}</div>
                                     </th>
                                     <td scope="col">
-                                        <div className="tableContent"> {receipt.id}</div>
-                                    </td>
-                                    <td scope="col">
-                                        <div className="tableContent"> {receipt.guestReceiptDetail.length}</div>
-                                    </td>
-                                    <td scope="col">
-                                        <div className="tableContent" style={{ color: "red" }}>
-                                            ${receipt.total}
+                                        <div className="tableContent">
+                                            {receipt.userId}
                                         </div>
                                     </td>
+
                                     <td scope="col">
-                                        <div className="tableContent">
-                                            {receipt.paid ? "Paid" : "Un paid"}
+                                        <td className="tableContent">
+                                            <select >
+                                                <option value="PENDING">Pending</option>
+                                                <option value="ACCEPTED">Accepted</option>
+                                                <option value="SHIPPING">Shipping</option>
+                                                <option value="DONE">Done</option>
+                                            </select> </td>
+                                    </td>
+                                    <td scope="col">
+                                        <div className="tableContent" >
+                                            {receipt.createAt}
                                         </div>
                                     </td>
+
                                     <td scope="col">
-                                        <div className="tableContent"> {receipt.payMode}</div>
-                                    </td>
-                                    <td scope="col">
-                                        <div className="tableContent"> {receipt.createAt}</div>
-                                    </td>
-                                    <td scope="col">
-                                        <div className="tableContent">
-                                            <button
-                                                style={{ backgroundColor: "rgb(10, 88, 202)" }}
-                                                type="button"
-                                                className="btn btn-primary"
-                                            >
-                                                Details
-                                            </button>
+                                        <div style={{ cursor: "pointer" }} onClick={() => {
+                                            navigate(`/receiptDetails/${receipt.id}`)
+                                        }} className="tableContent">
+                                            Details
                                         </div>
                                     </td>
                                 </tr>
                             ))}
-
-
                         </tbody>
                     </table>
                 </div>
