@@ -1,6 +1,6 @@
 import api from "@/services/api";
 import { StoreType } from "@/stores";
-import { ReceiptDetail } from "@/stores/slices/user";
+import { Receipt, ReceiptDetail } from "@/stores/slices/user";
 
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -9,9 +9,10 @@ import { useParams } from "react-router-dom";
 
 
 
-export default function ReceiptDetails() {
+export default function GuestReceiptDetail() {
 
     const { receiptId } = useParams();
+    const [receipts, setReceipts] = useState<Receipt[]>([]);
 
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
@@ -19,35 +20,20 @@ export default function ReceiptDetails() {
 
     const [total, setTotal] = useState<number>(0);
 
+
     useEffect(() => {
-        const receiptDetail = findReceiptDetail();
-
-        if (receiptDetail) {
-            let calculatedTotal = 0;
-            receiptDetail.detail?.forEach((product: ReceiptDetail) => {
-                calculatedTotal += product.option.price * product.quantity;
-            });
-            setTotal(calculatedTotal);
+        const findResult = receipts?.find((item: any) => item.id === receiptId);
+        if (findResult) {
+            console.log(`Chi tiết hóa đơn có id ${receiptId}:`, findResult);
+        } else {
+            console.log(`Không tìm thấy hóa đơn với id ${receiptId}`);
         }
-
-    }, [userStore.receipts, receiptId]);
-
-
-    const findReceiptDetail = () => {
-        if (userStore.receipts) {
-            const receiptDetail = userStore.receipts.find((receipt) => receipt.id == receiptId);
-            // console.log("Receipt Detail:", receiptDetail?.detail);
-            return receiptDetail;
-        }
-        return null;
-    };
-
-    const receiptDetail = findReceiptDetail();
+    }, [receipts, receiptId]);
 
 
     return (
         <div>
-            <h1 style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "10px" }}>Receipt Detail</h1>
+            <h1 style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "10px" }}>Guest Receipt Detail</h1>
             <table className="table">
                 <thead>
                     <tr>
@@ -72,7 +58,7 @@ export default function ReceiptDetails() {
                     </tr>
                 </thead>
                 <tbody>
-                    {receiptDetail?.detail?.map((product: ReceiptDetail, index: number) => (
+                    {/* {receiptDetail?.detail?.map((product: ReceiptDetail, index: number) => (
                         <tr key={index}>
                             <th scope="col">
                                 <div className="tableContent">{index + 1}</div>
@@ -95,7 +81,7 @@ export default function ReceiptDetails() {
                                 <div className="tableContent">{product.quantity}</div>
                             </td>
                         </tr>
-                    ))}
+                    ))} */}
 
                 </tbody>
                 <div style={{ display: "flex", marginTop: "20px" }}>

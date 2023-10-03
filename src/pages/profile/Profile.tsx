@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import './profile.scss'
 import api from '@/services/api';
-import { message } from 'antd'
+import { Modal, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
 import { User, userAction } from '@/stores/slices/user';
 import axios from 'axios';
 import { LoadingOutlined } from "@ant-design/icons";
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
     const [oldPassword, setOldPassword] = useState("")
-    const [newPassword, setNewPassword] = useState("")
-
+    const [newPassword, setNewPassword] = useState("");
+    const navigate = useNavigate()
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
@@ -28,9 +29,18 @@ export default function Profile() {
                 console.log("res", res);
 
                 if (res.status == 200) {
-                    message.success("Check your confirmation email")
-                    localStorage.removeItem("token")
-                    window.location.href = '/';
+                    Modal.success({
+
+                        content: "Check your confirmation email",
+                        onOk: () => {
+                            localStorage.removeItem("token")
+                            navigate('/')
+                        }
+                    })
+                    // message.success("Check your confirmation email")
+
+                    // localStorage.removeItem("token")
+                    // window.location.href = '/';
                 } else {
                     message.error('Incorrect password')
                 }

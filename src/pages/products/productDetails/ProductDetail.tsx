@@ -80,22 +80,27 @@ export default function ProductDetail() {
       //console.log("da vao");
 
       let cart = JSON.parse(localStorage.getItem("cart") ?? "[]")
-      let findResult = cart.find((item: any) => item.optionId === products?.productOption[optionIndex].id)
+      let findResult = cart?.find((item: any) => item.option.id == products?.productOption[optionIndex].id)
+      console.log("findResult:", findResult)
       if (findResult) {
-        findResult.quantity += 1
+        findResult.quantity += quantity
+        console.log("findResult.quantity:", findResult.quantity)
         localStorage.setItem("cart", JSON.stringify(cart))
+        message.success("Add To Cart Successfully");
       } else {
         cart.push({
           option: {
             ...products?.productOption[optionIndex],
             product: {
+              avatar: products?.avatar,
               name: products?.name,
               price: products?.productOption[optionIndex].price
             }
           },
-          quantity: 1,
+          quantity: quantity,
         })
         localStorage.setItem("cart", JSON.stringify(cart))
+        message.success("Add To Cart Successfully");
       }
       dispatch(guestCartActions.setCart(cart))
     }
@@ -121,12 +126,6 @@ export default function ProductDetail() {
             src={products?.avatar}
             alt=""
           />
-          {/* <div className="detail_img_img" >
-
-            <img src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwca0679cc/Products/3147758029390%20_MIRACLE.jpg?sw=375&sh=375&sm=cut&sfrm=jpg&q=70" alt="" />
-            <img src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwca0679cc/Products/3147758029390%20_MIRACLE.jpg?sw=375&sh=375&sm=cut&sfrm=jpg&q=70" alt="" />
-            <img src="https://www.lancome-usa.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-lancome-us-master-catalog/default/dwca0679cc/Products/3147758029390%20_MIRACLE.jpg?sw=375&sh=375&sm=cut&sfrm=jpg&q=70" alt="" />
-          </div> */}
 
         </div>
         <div className="detail_content">

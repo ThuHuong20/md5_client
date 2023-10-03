@@ -29,7 +29,9 @@ export default function Navbar() {
         return store.userStore
     })
 
-
+    const guestCartStore = useSelector((store: StoreType) => {
+        return store.guestCartStore
+    })
 
 
 
@@ -201,9 +203,17 @@ export default function Navbar() {
                                 className="fa-solid fa-bag-shopping"
                                 style={{ cursor: "pointer" }}
                             > </i>
-                            <p style={{ color: "red" }}>{userStore.cart?.detail.reduce((value, cur) => {
+                            {/* <p style={{ color: "red" }}>{userStore.cart?.detail.reduce((value, cur) => {
                                 return value += cur.quantity
-                            }, 0)}</p>
+                            }, 0)}</p> */}
+                            {
+                                userStore.socket ? <p style={{ color: "red" }}>{userStore.cart?.detail.reduce((value, cur) => {
+                                    return value += cur.quantity
+                                }, 0)}</p>
+                                    : <p style={{ color: "red" }}>{guestCartStore.cart?.reduce((value, cur) => {
+                                        return value + cur.quantity
+                                    }, 0)}</p>
+                            }
                         </div>
                         <div className="dropdown">
                             <a

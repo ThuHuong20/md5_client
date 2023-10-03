@@ -2,21 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Products } from "./product.slice";
 
 
-interface CartItemType {
+export interface CartItemType {
     quantity: number,
     option: {
-        id: string;
-        name: string;
-        productId: string;
+        id: string,
+        name: string,
+        productId: string,
         product: Products;
-        product_option_images: {
-            id: string;
-            url: string;
-        };
-    };
+        price: number;
+        option: string;
+    }
 }
 
-interface GuestCartState {
+export interface GuestCartState {
     cart: CartItemType[]
 }
 

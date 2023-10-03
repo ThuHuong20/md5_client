@@ -9,6 +9,7 @@ import { Receipt, User, userAction } from './stores/slices/user';
 import { Modal, message } from 'antd';
 import ChatBox from './pages/components/ChatBox';
 import { Socket, io } from 'socket.io-client';
+import { guestCartActions } from './stores/slices/guestCart.slice';
 
 
 
@@ -17,6 +18,10 @@ function App() {
   const userStore = useSelector((store: StoreType) => {
     return store.userStore
   })
+
+  useEffect(() => {
+    dispatch(guestCartActions.setCart(JSON.parse(localStorage.getItem("cart") || "[]")))
+  }, [])
   /* Check Token */
 
   useEffect(() => {
@@ -30,7 +35,7 @@ function App() {
         })
         socket.on("connectStatus", (data: { status: boolean, message: string }) => {
           if (data.status) {
-            message.success(data.message)
+            // message.success(data.message)
           } else {
             localStorage.removeItem("token")
           }

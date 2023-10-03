@@ -16,6 +16,7 @@ import Payment from "@/pages/carts/Payment";
 import Recipts from "@/pages/carts/Recipts";
 import CheckOrder from "@/pages/carts/CheckOrder";
 import ReceiptDetails from "@/pages/carts/ReceiptDetail";
+import GuestReceiptDetail from "@/pages/carts/GuestReciptDetail";
 
 
 // import RouteAuthen from "./RouteAuthen";
@@ -37,6 +38,7 @@ export default function RouteSetup() {
           <Route path="/recipt" element={<Recipts />}></Route>
           <Route path="/receiptDetails/:receiptId" element={<ReceiptDetails />}></Route>
           <Route path="/CheckOrder" element={<CheckOrder />}></Route>
+          <Route path="/guestReceiptDetail/:receiptId" element={<GuestReceiptDetail />}></Route>
           {RouteProduct}
         </Route>
         {RouteAdmin}
