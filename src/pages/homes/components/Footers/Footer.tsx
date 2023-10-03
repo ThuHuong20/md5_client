@@ -7,77 +7,77 @@ export default function Footer() {
             <div className='footer_logo'>
                 <div className='footer_logo_detail'>
                     <img src="../images/1.webp" alt="" />
-                    <p style={{ marginTop: "20px" }}>Free shipping for orders <br />
-                        $100+ and free returns</p>
+                    <p style={{ marginTop: "20px" }}>{t("free")} <br />
+                        {t("return")}</p>
                 </div>
                 <div className='footer_logo_detail'>
                     <img src="../images/2.webp" alt="" />
-                    <p>Complimentary<br />
-                        samples with every <br />order</p>
+                    <p>{t("com")}<br />
+                        {t("sample")} <br />{t("order")}</p>
                 </div>
                 <div className='footer_logo_detail'>
                     <img src="../images/3.webp" alt="" />
-                    <p>Join My Lancôme Rewards <br />
-                        redeem exclusive offers</p>
+                    <p>{t("join")}<br />
+                        {t("redeem")}</p>
                 </div>
                 <div className='footer_logo_detail'>
                     <img src="../images/4.webp" alt="" />
-                    <p>Complimentary <br />
-                        engraving</p>
+                    <p>{t("com")} <br />
+                        {t("engra")}</p>
                 </div>
             </div>
             <div className="l-footer__nav-inner footer_text">
                 <ul className="l-footer__nav-list m-level-1 h-show-for-large">
-                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1 hhhh" href="https://www.lancome-usa.com/customer-service-contact-us.html">CUSTOMER CARE</a></li>
+                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1 hhhh" href="https://www.lancome-usa.com/customer-service-contact-us.html">{t("cus")}</a></li>
                     <li className="l-footer__nav-item m-level-1">
                         <ul className="l-footer__nav-list m-level-2">
                             <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-faqs.html">FAQ</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-my-orders.html">Order Status</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-shipping-and-returns.html">Shipping and Returns</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-terms-and-conditions.html">Terms &amp; Conditions</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-my-orders.html">{t("Order Status")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-shipping-and-returns.html">{t("and")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/customer-service-terms-and-conditions.html">{t("term")}</a></li>
                             <li className="l-footer__nav-item m-level-2"><div id="livechat-footer-cust"></div></li>
                         </ul>
                     </li>
                 </ul>
                 <ul className="l-footer__nav-list m-level-1 h-show-for-large">
-                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/sustainability.html">ABOUT LANCÔME</a></li>
+                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/sustainability.html">{t("lancome")}</a></li>
                     <li className="l-footer__nav-item m-level-1">
                         <ul className="l-footer__nav-list m-level-2">
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/sustainability.html">Sustainability Program</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/live-responsibly.html">Live Responsibly</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/bring-the-world-to-bloom.html">Bring the World to Bloom</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/write-her-future.html">Write Her Future</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/sustainability.html">{t("program")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/live-responsibly.html">{t("live")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/bring-the-world-to-bloom.html">{t("bring")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/write-her-future.html">{t("write")}</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul className="l-footer__nav-list m-level-1 h-show-for-large">
-                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/beauty-magazine.html">BEAUTY MAGAZINE</a></li>
+                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/beauty-magazine.html">{t("beauty")}</a></li>
                     <li className="l-footer__nav-item m-level-1">
                         <ul className="l-footer__nav-list m-level-2">
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-skincare.html">Skincare</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-makeup.html">Makeup</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-fragrance.html">Fragrance</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-skincare.html">{t("skin")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-makeup.html">{t("mekup")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/beauty-magazine-fragrance.html">{t("fran")}</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul className="l-footer__nav-list m-level-1 h-show-for-large">
-                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/how-to-video-library.html">BEAUTY TUTORIALS</a></li>
+                    <li className="l-footer__nav-item m-level-1"><a className="l-footer__nav-link m-level-1" href="https://www.lancome-usa.com/how-to-video-library.html">{t("tutor")}</a></li>
                     <li className="l-footer__nav-item m-level-1">
                         <ul className="l-footer__nav-list m-level-2">
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-skincare.html">Skincare</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-makeup.html">Makeup</a></li>
-                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-tips-and-tricks.html">Tips &amp; Tricks</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-skincare.html">{t("skin")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-makeup.html">{t("mekup")}</a></li>
+                            <li className="l-footer__nav-item m-level-2"><a className="l-footer__nav-link m-level-2" href="https://www.lancome-usa.com/how-to-tips-and-tricks.html">{t("tip")}</a></li>
                         </ul>
                     </li>
                 </ul>
                 <div className='email_footer'>
                     <div className='email_signin'>
-                        <p>Email sign up</p>
-                        <input type="text" placeholder='Your Email Address' />
-                        <button>Submit</button>
+                        <p>{t("email")}</p>
+                        <input type="text" placeholder={t("address")} />
+                        <button>{t("submit")}</button>
                     </div>
                     <div className='email_follow'>
-                        <h1>Follow Us</h1>
+                        <h1>{t("follow")}</h1>
                         <div className='email_follow_icon'>
                             <i className="fa-brands fa-facebook"></i>
                             <i className="fa-brands fa-instagram"></i>

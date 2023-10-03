@@ -25,7 +25,7 @@ export default {
         })
     },
     resendEmail: async function () {
-        return await axios.get(import.meta.env.VITE_SV_HOST + "resend-email"), {
+        return await axios.get(import.meta.env.VITE_SV_HOST + "users/resend-email"), {
             headers: {
                 "token": localStorage.getItem("token")
             }
@@ -44,5 +44,12 @@ export default {
             import.meta.env.VITE_SV_HOST + "users/google-login",
             data,
         )
+    },
+    updateAvatar: async function (formData: FormData) {
+        return await axios.post(import.meta.env.VITE_SV_HOST + "users/updateAvatar", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
     },
 }

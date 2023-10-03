@@ -12,7 +12,7 @@ export default function Content() {
             <div className='container_category'>
                 <div className='container_category_text'>
                     <p>───</p>
-                    <h1>SHOP BY CATEGORY</h1>
+                    <h1>{t('SHOPBYCATEGORY')}</h1>
                     <p>───</p>
                 </div>
                 <div className='container_category_img'>
@@ -20,21 +20,21 @@ export default function Content() {
                         window.location.href = "http://localhost:5173/categories/8c362aed-c08a-463f-8547-87e6c4c7d66e";
                     }}>
                         <img src="../images/skincare.webp" alt="" />
-                        <h2>SKINCARE</h2>
+                        <h2> {t('Skincare')}</h2>
                         <button>{t('BuyNow')}</button>
                     </div>
                     <div onClick={() => {
                         window.location.href = "http://localhost:5173/categories/007a9eca-5c88-4d40-add2-d6dae26da9c3";
                     }}>
                         <img src="../images/makeup.webp" alt="" />
-                        <h2>MEKEUP</h2>
+                        <h2>{t('MakeUp')}</h2>
                         <button>{t('BuyNow')}</button>
                     </div>
                     <div onClick={() => {
                         window.location.href = "http://localhost:5173/categories/f0350b39-8c05-4dd7-842b-c41c35b14d91";
                     }}>
                         <img src="../images/perfume.webp" alt="" />
-                        <h2>PERFUME</h2>
+                        <h2>{t('PERPUME')}</h2>
                         <button>{t('BuyNow')}</button>
                     </div>
                 </div>
@@ -42,7 +42,7 @@ export default function Content() {
             <div className='container_sellers'>
                 <div className='container_sellers_text'>
                     <p>───</p>
-                    <h1>OUR BESTSELLERS</h1>
+                    <h1>{t('BESTSELLERS')}</h1>
                     <p>───</p>
                 </div>
                 <SaleCarousel />

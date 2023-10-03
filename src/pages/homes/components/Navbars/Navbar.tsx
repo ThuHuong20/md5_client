@@ -44,19 +44,17 @@ export default function Navbar() {
                 >
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <b>Fall Favorites Sale starts TODAY!</b>
-                            25% off Sitewide, plus free gift with $125+.
-                            <u>Shop Now</u>
+                            <b>{t('B')}</b>
+
+                            <u>{t('BuyNow')}</u>
                         </div>
                         <div className="carousel-item">
-                            Discover Rénergie H.P.N. 300-Peptide Cream, now available with broad spectrum SPF 25 sun protection!
-                            <u>Shop Now</u>
+                            {t('A')}
+                            <u>{t('BuyNow')}</u>
                         </div>
                         <div className="carousel-item">
-                            Discover
-                            <b>Lancôme x The Louvre</b>
-                            , an iconic collaboration between two French houses.
-                            <u>Shop the exclusive collection</u>
+                            <b>{t('C')}</b>
+                            <u>{t('BuyNow')}</u>
                         </div>
                     </div>
                 </div>
@@ -79,44 +77,37 @@ export default function Navbar() {
                             href="/"
                             style={{ color: "black", textDecoration: "none" }}
                         >
-                            HOME
+                            {t('Home')}
                         </a>
-                        {/* {category.map((category: any) => (
-                            <Link
-                                className="item"
-                                style={{ color: "black", textDecoration: "none" }}
-                                to={`categories/${category.id}`}
-                            >
-                                {category.title}
-                            </Link>
-                        ))} */}
+
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
                             href='http://localhost:5173/categories/8c362aed-c08a-463f-8547-87e6c4c7d66e'
                         >
-                            SKINCARE
+                            {t('Skincare')}
+
                         </a>
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
                             href="http://localhost:5173/categories/007a9eca-5c88-4d40-add2-d6dae26da9c3"
                         >
-                            MAKEUP
+                            {t('MakeUp')}
                         </a>
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
                             href="http://localhost:5173/categories/f0350b39-8c05-4dd7-842b-c41c35b14d91"
                         >
-                            PERPUME
+                            {t('PERPUME')}
                         </a>
                         <a
                             className="item"
                             style={{ color: "black", textDecoration: "none" }}
                             href="https://cakerun.com.au/about-us/"
                         >
-                            ABOUT
+                            {t('About')}
                         </a>
                     </div>
 
@@ -160,6 +151,10 @@ export default function Navbar() {
                                                 onOk: () => {
                                                     localStorage.removeItem("token");
                                                     userStore.socket?.disconnect();
+                                                    dispatch(userAction.setCart(null))
+                                                    dispatch(userAction.setData(null))
+                                                    dispatch(userAction.setReceipt(null))
+                                                    dispatch(userAction.setSocket(null))
                                                     window.location.href = '/'
                                                 },
                                             });
@@ -198,7 +193,7 @@ export default function Navbar() {
                             </div>
                         )}
                         {/* Cart */}
-                        <div style={{ display: "flex", marginTop: "9px" }}>
+                        <div style={{ display: "flex", marginTop: "5px" }}>
                             <i
                                 onClick={() => {
                                     window.location.href = "/cart";
@@ -220,7 +215,6 @@ export default function Navbar() {
                                 <a style={{ display: "flex", gap: "10px" }} className="dropdown-item" href="">
                                     {i18n.language === 'en' && <img style={{ width: "20px", height: "15px", marginTop: "5px" }} src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png" alt="" />}
                                     {i18n.language === 'vi' && <img style={{ width: "20px", height: "15px", marginTop: "5px" }} src="https://cdn.countryflags.com/thumbs/vietnam/flag-400.png" alt="" />}
-                                    {i18n.language === 'ja' && <img style={{ width: "20px", height: "15px", marginTop: "5px" }} src="https://www.countryflags.com/wp-content/uploads/japan-flag-png-large.png" alt="" />}
                                 </a>
 
                             </a>
@@ -239,12 +233,6 @@ export default function Navbar() {
                                     <p onClick={() => {
                                         changeLanguage('vi')
                                     }}> {t('vi')}</p>
-                                </a>
-                                <a style={{ display: "flex", gap: "10px" }} className="dropdown-item" href="">
-                                    <img style={{ width: "20px", height: "15px", marginTop: "5px" }} src="https://www.countryflags.com/wp-content/uploads/japan-flag-png-large.png" alt="" />
-                                    <p onClick={() => {
-                                        changeLanguage('ja')
-                                    }}>{t('ja')}</p>
                                 </a>
                             </div>
                         </div>

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import './profile.scss'
 import api from '@/services/api';
 import { message } from 'antd'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '@/stores';
-import { User } from '@/stores/slices/user';
+import { User, userAction } from '@/stores/slices/user';
 import axios from 'axios';
+import { LoadingOutlined } from "@ant-design/icons";
 
 export default function Profile() {
     const [oldPassword, setOldPassword] = useState("")
@@ -14,15 +15,18 @@ export default function Profile() {
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
-
-
+    console.log("userStore:", userStore)
     async function handleChangePassword() {
         let data = {
             oldPassword,
             newPassword
         }
+        console.log("data", data);
+
         await api.userApi.changePassword(data)
             .then(res => {
+                console.log("res", res);
+
                 if (res.status == 200) {
                     message.success("Check your confirmation email")
                     localStorage.removeItem("token")
@@ -36,23 +40,66 @@ export default function Profile() {
 
             })
     }
+    const antIcon = (
+        <LoadingOutlined
+            style={{
+                fontSize: 24,
+            }}
+            spin
+        />
+    );
+    const [upAvatar, setUpAvatar] = useState([])
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false);
+    // const handleClose = () => setShow(false);
 
-    // async function handleResendEmail() {
-    //     try {
-    //         const res = await api.userApi.resendEmail();
-    //         message.success("Email confirmation sent successfully. Check your email.");
+    async function updateAvatar() {
 
-    //     } catch (err) {
-    //         console.error("Error:", err);
-    //     }
-    // }
-    function handleResendEmail() {
-        axios.get("http://127.0.0.1:3000/api/v1/users/resend-email", {
-            headers: {
-                "token": localStorage.getItem("token")
+        if (upAvatar.length > 0) {
+            (document.querySelector('.input_img_preview') as HTMLImageElement).src = URL.createObjectURL(upAvatar[0]);
+        }
+
+        try {
+            if (upAvatar.length > 0) {
+                let formData = new FormData();
+                formData.append('avatar', upAvatar[0]);
+                setLoading(true);
+                let result = await api.userApi.updateAvatar(formData);
+                console.log("resule", result)
+
+
+                setLoading(false);
+                if (result.status == 200) {
+                    //handleClose()
+                    message.success(`Update Avatar Successfull!`)
+                    localStorage.setItem("token", result.data.token);
+                    dispatch(userAction.setData(result.data.data))
+
+
+                } else {
+                    console.log("errr");
+                }
             }
-        })
+
+        } catch (err) {
+            console.log("err", err)
+            setLoading(false);
+
+        }
     }
+
+    async function handleResendEmail() {
+        try {
+            const res = await api.userApi.resendEmail()
+
+            console.log("res:", res)
+            message.success("Email confirmation sent successfully. Check your email.");
+
+        } catch (err) {
+            console.error("Error:", err);
+        }
+    }
+
 
     return (
         <>
@@ -68,30 +115,22 @@ export default function Profile() {
                     <div
                         style={{ cursor: "pointer" }}
                         onClick={() => {
-                            window.open("/receipts");
+                            window.open("/receipt");
                         }}
                     >
                         <h4>PURCHASE HISTORY</h4>
                     </div>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-around", marginTop: "20px" }}>
-                    <div>
-                        <img
-                            style={{
-                                width: "150px",
-                                height: "150px",
-                                borderRadius: "50%",
-                                marginTop: "10px",
-                            }}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ86yDtDbrPbacDIiDqqw1XzpPklqLKqcVM5g&usqp=CAU"
-                            alt=""
-                        />
+                    <div className='content_left'>
+                        <img style={{ width: "150px", height: "150px", borderRadius: "50%", }} className='input_img_preview' src={userStore?.data?.avatar} alt="" />
+                        <input style={{ width: "200px" }} type="file" onChange={(e: any) => {
+                            console.log("e", e.target.files);
+                            setUpAvatar(e.target.files);
+                        }} className='input_btn' />
                         <br />
+                        {loading ? <button> <span className='loading-spinner changeAva'></span></button> : <button style={{ marginLeft: "20px", backgroundColor: "black", color: "white", padding: "10px", borderRadius: "5px" }} className='changeAva' onClick={() => updateAvatar()}>Change Avatar</button>}
 
-                        <b style={{ marginLeft: "50px" }}>
-
-                            Avatar
-                        </b>
                     </div>
                     <div style={{ width: "400px", marginTop: "30px" }}>
                         <input
@@ -109,7 +148,8 @@ export default function Profile() {
                 </div>
                 <br></br>
                 <form
-                    onSubmit={() => {
+                    onSubmit={(e) => {
+                        e.preventDefault()
                         handleChangePassword()
                     }}
                 >
@@ -169,7 +209,8 @@ export default function Profile() {
 
                                 <button style={{ marginTop: "10px" }}
                                     className="btn btn-info"
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.preventDefault()
                                         handleResendEmail()
                                     }}
                                 >

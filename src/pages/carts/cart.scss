@@ -563,6 +563,10 @@ hr {
                 margin-bottom: 10px;
                 border-bottom: 5px solid brown;
                 margin-right: 30px;
+
+                &:focus {
+                    outline: none;
+                }
             }
 
             .check_order_button {
@@ -629,6 +633,10 @@ hr {
             margin-bottom: 10px;
             border-bottom: 5px solid brown;
             margin-right: 30px;
+
+            &:focus {
+                outline: none;
+            }
         }
 
         .check_order_button2 {

@@ -30,9 +30,9 @@ function App() {
         })
         socket.on("connectStatus", (data: { status: boolean, message: string }) => {
           if (data.status) {
-            //message.success(data.message)
+            message.success(data.message)
           } else {
-            //  message.error(data.message)
+            localStorage.removeItem("token")
           }
         })
         socket.on("disconnect", () => {

@@ -4,11 +4,12 @@ import './productDetail.scss'
 import { useEffect, useState } from 'react';
 import api from '@/services/api';
 import { Products } from '@/stores/slices/product.slice';
-import { useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { StoreType } from '@/stores';
 import user from '@/services/api/modules/user';
 import { message } from 'antd';
 import { ReceiptDetail } from '@/stores/slices/user';
+import { guestCartActions } from '@/stores/slices/guestCart.slice';
 
 export default function ProductDetail() {
   //const { t, i18n } = useTranslation();
@@ -20,7 +21,7 @@ export default function ProductDetail() {
 
   const [quantity, setQuantity] = useState(1);
 
-
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (id) {
@@ -75,6 +76,28 @@ export default function ProductDetail() {
         }
 
       }
+    } else {
+      //console.log("da vao");
+
+      let cart = JSON.parse(localStorage.getItem("cart") ?? "[]")
+      let findResult = cart.find((item: any) => item.optionId === products?.productOption[optionIndex].id)
+      if (findResult) {
+        findResult.quantity += 1
+        localStorage.setItem("cart", JSON.stringify(cart))
+      } else {
+        cart.push({
+          option: {
+            ...products?.productOption[optionIndex],
+            product: {
+              name: products?.name,
+              price: products?.productOption[optionIndex].price
+            }
+          },
+          quantity: 1,
+        })
+        localStorage.setItem("cart", JSON.stringify(cart))
+      }
+      dispatch(guestCartActions.setCart(cart))
     }
   }
   useEffect(() => {

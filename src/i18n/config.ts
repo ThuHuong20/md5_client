@@ -3,8 +3,6 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import en from './translations/en'
 import vi from './translations/vi'
-import ja from './translations/ja'
-
 function setLocalLanguage() {
     let locales = localStorage.getItem("locales");
     return locales ? locales : 'en'
@@ -22,9 +20,6 @@ i18n
             },
             vi: {
                 translation: vi,
-            },
-            ja: {
-                translation: ja,
             },
         },
     });
